@@ -65,6 +65,8 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+        inputs.keyPressed(nativeKeyEvent.getKeyCode());
+
         for (int i = 0; i < baseKeys.length; i++) {
             if (nativeKeyEvent.getKeyCode() == baseKeys[i]){
                 basePressed[i] = true;
@@ -75,8 +77,6 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
         if (areAllPressed()){
             if (moduleKeyMap.get(nativeKeyEvent.getKeyCode()) != null) events.modulePressed(moduleKeyMap.get(nativeKeyEvent.getKeyCode()));
         }
-
-        inputs.keyPressed(nativeKeyEvent.getKeyCode());
     }
 
     @Override
