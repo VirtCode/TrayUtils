@@ -7,6 +7,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.geom.RoundRectangle2D;
 
 /**
@@ -14,6 +18,8 @@ import java.awt.geom.RoundRectangle2D;
  * @version 1.0
  */
 public class ColorPickerModule extends Module {
+    private boolean showInstructions = true;
+
     private boolean clicked;
     private boolean cancelled;
     private boolean alreadyRunning;
@@ -69,9 +75,15 @@ public class ColorPickerModule extends Module {
 
         frame.getContentPane().setBackground(color);
 
-        JLabel label = (JLabel) frame.getContentPane().getComponent(0);
+        JLabel label = (JLabel) frame.getContentPane().getComponent(showInstructions ? 1 : 0);
         label.setText("#" + toHex(color));
         label.setForeground(luma > 100 ? Color.BLACK : Color.WHITE);
+
+        if (showInstructions) {
+            JLabel instructions = (JLabel) frame.getContentPane().getComponent(0);
+            instructions.setForeground(luma > 100 ? new Color(0x5E5E5E) : new Color(0x979797));
+        }
+
     }
 
     private String toHex(Color color){
@@ -92,6 +104,14 @@ public class ColorPickerModule extends Module {
         frame.setLocation(bounds.width - 10 - 200, bounds.height - 50 - 100);
         frame.setVisible(true);
 
+        if (showInstructions) {
+            JLabel instructions = new JLabel("Click to Select, Esc to Cancel.", SwingConstants.CENTER);
+            instructions.setFont(new Font("Calibri", Font.PLAIN, 12));
+            instructions.setSize(200, 20);
+            instructions.setLocation(0, 80);
+            frame.add(instructions);
+        }
+
         JLabel label = new JLabel("#", SwingConstants.CENTER);
         label.setSize(200, 100);
         label.setFont(new Font("Calibri", Font.BOLD, 18));
@@ -102,17 +122,25 @@ public class ColorPickerModule extends Module {
 
     @Override
     public MenuItem settingsMenu() {
-        return null;
+        CheckboxMenuItem showHelp = new CheckboxMenuItem("Show Instructions", showInstructions);
+        showHelp.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                showInstructions = e.getStateChange() == ItemEvent.SELECTED;
+                eventBus.saveSettings();
+            }
+        });
+        return showHelp;
     }
 
     @Override
     public void fromSettings(String s) {
-
+        showInstructions = Boolean.parseBoolean(s);
     }
 
     @Override
     public String toSettings() {
-        return null;
+        return showInstructions + "";
     }
 
     @Override
@@ -122,7 +150,8 @@ public class ColorPickerModule extends Module {
         });
 
         inputBus.addKeyReleasedListener(e -> {
-            if (e == NativeKeyEvent.VC_ESCAPE) cancelled = true;
+            if (e == NativeKeyEvent.VC_ENTER) clicked = true;
+            else if (e == NativeKeyEvent.VC_ESCAPE) cancelled = true;
         });
     }
 }

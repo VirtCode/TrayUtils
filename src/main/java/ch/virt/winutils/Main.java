@@ -5,6 +5,7 @@ import ch.virt.winutils.event.InputBus;
 import ch.virt.winutils.event.InputListener;
 import ch.virt.winutils.modules.ColorPickerModule;
 import ch.virt.winutils.modules.ModuleLoader;
+import ch.virt.winutils.settings.KeyChooser;
 import ch.virt.winutils.settings.ModuleSettings;
 import ch.virt.winutils.settings.Settings;
 
@@ -54,5 +55,11 @@ public class Main {
             settings.save();
             System.exit(0);
         }, modules.getSettingsMenus());
+
+        new KeyChooser(inputs).choose(e -> {
+            for (Integer integer : e) {
+                System.out.println(integer);
+            }
+        });
     }
 }
