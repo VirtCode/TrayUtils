@@ -3,6 +3,7 @@ package ch.virt.winutils;
 import ch.virt.winutils.event.EventBus;
 import ch.virt.winutils.event.InputBus;
 import ch.virt.winutils.event.InputListener;
+import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.modules.ColorPickerModule;
 import ch.virt.winutils.modules.ModuleLoader;
 import ch.virt.winutils.settings.KeyChooser;
@@ -24,6 +25,7 @@ public class Main {
     InputBus inputs;
     InputListener listener;
     Tray tray;
+    KeyChooser keyChooser;
 
     public Main(){
         events = new EventBus() {
@@ -36,6 +38,29 @@ public class Main {
             @Override
             public void modulePressed(int id) {
                 modules.keyEventForModule(id);
+            }
+
+            @Override
+            public void getNewBind(Listener<Integer[]> listener) {
+                keyChooser.choose(listener);
+            }
+
+            @Override
+            public void chooseBaseBind() {
+                keyChooser.choose(arg -> {
+                    int[] ints = new int[arg.length];
+                    for (int i = 0; i < ints.length; i++) ints[i] = arg[i];
+                    settings.setBaseKeyCodes(ints);
+                    settings.save();
+                    tray.refreshPopupMenu(modules.getSettingsMenus(), settings.getBaseKeyCodes());
+                    listener.refreshBaseKeyCodes(settings.getBaseKeyCodes());
+                });
+            }
+
+            @Override
+            public void quit() {
+                settings.save();
+                System.exit(0);
             }
         };
         inputs = new InputBus();
@@ -51,15 +76,9 @@ public class Main {
 
         listener = new InputListener(settings, events, inputs);
 
-        tray = new Tray(e -> {
-            settings.save();
-            System.exit(0);
-        }, modules.getSettingsMenus());
+        tray = new Tray(events, modules.getSettingsMenus(), settings.getBaseKeyCodes());
 
-        new KeyChooser(inputs).choose(e -> {
-            for (Integer integer : e) {
-                System.out.println(integer);
-            }
-        });
+        keyChooser = new KeyChooser(inputs);
+
     }
 }

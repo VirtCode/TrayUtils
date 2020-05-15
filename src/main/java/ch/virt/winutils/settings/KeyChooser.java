@@ -23,7 +23,11 @@ public class KeyChooser {
     public KeyChooser(InputBus bus) {
         currentlyPressed = new ArrayList<>();
         bus.addKeyPressedListener(c -> {
-            if (running) if(!currentlyPressed.contains(c)) currentlyPressed.add(c);
+            if (running){
+                if (c == NativeKeyEvent.VC_ENTER) finished = true;
+                else if(!currentlyPressed.contains(c)) currentlyPressed.add(c);
+            }
+
         });
         bus.addKeyReleasedListener(c -> {
             finished = true;
@@ -43,7 +47,7 @@ public class KeyChooser {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        JLabel instructions = new JLabel("Click to Cancel.", SwingConstants.CENTER);
+        JLabel instructions = new JLabel("Click to Cancel. Enter to force confirm.", SwingConstants.CENTER);
         instructions.setFont(new Font("Calibri", Font.PLAIN, 12));
         instructions.setSize(400, 20);
         instructions.setLocation(0, 180);
@@ -91,10 +95,13 @@ public class KeyChooser {
     }
 
     private String keyString(){
-        if (currentlyPressed.size() == 0) return "";
-        ArrayList<Integer> latelyPressed = new ArrayList<>(currentlyPressed);
+        return prettifyKeyArray(currentlyPressed.toArray(new Integer[0]));
+    }
+
+    public static String prettifyKeyArray(Integer[] binds){
+        if (binds.length == 0) return "";
         StringBuilder sb = new StringBuilder();
-        for (Integer integer : latelyPressed) {
+        for (int integer : binds) {
             sb.append(" + ");
             sb.append(NativeKeyEvent.getKeyText(integer));
         }

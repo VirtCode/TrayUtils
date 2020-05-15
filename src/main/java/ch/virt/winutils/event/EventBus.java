@@ -10,4 +10,7 @@ import java.util.ArrayList;
 public abstract class EventBus {
     public abstract void saveSettings();
     public abstract void modulePressed(int id);
+    public abstract void getNewBind(Listener<Integer[]> listener);
+    public abstract void chooseBaseBind();
+    public abstract void quit();
 }

@@ -81,4 +81,7 @@ public class Settings {
 
     }
 
+    public void setBaseKeyCodes(int[] baseKeyCodes) {
+        this.baseKeyCodes = baseKeyCodes;
+    }
 }

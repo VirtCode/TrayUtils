@@ -111,4 +111,9 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
         inputs.mouseReleased(nativeMouseEvent.getButton());
     }
+
+    public void refreshBaseKeyCodes(int[] codes){
+        this.baseKeys = codes;
+        this.basePressed = new boolean[codes.length];
+    }
 }
