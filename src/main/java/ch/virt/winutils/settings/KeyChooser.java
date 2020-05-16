@@ -47,7 +47,7 @@ public class KeyChooser {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        JLabel instructions = new JLabel("Click to Cancel. Enter to force confirm.", SwingConstants.CENTER);
+        JLabel instructions = new JLabel("Click to Cancel. Enter to force confirmation.", SwingConstants.CENTER);
         instructions.setFont(new Font("Calibri", Font.PLAIN, 12));
         instructions.setSize(400, 20);
         instructions.setLocation(0, 180);

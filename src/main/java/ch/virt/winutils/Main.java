@@ -19,19 +19,46 @@ public class Main {
         new Main();
     }
 
-    Settings settings;
-    ModuleLoader modules;
-    EventBus events;
-    InputBus inputs;
-    InputListener listener;
-    Tray tray;
-    KeyChooser keyChooser;
+    private final Settings settings;
+    private final ModuleLoader modules;
+
+    private final EventBus events;
+    private final InputBus inputs;
+    private final InputListener listener;
+             
+    private final Tray tray;
+    private final KeyChooser keyChooser;
 
     public Main(){
-        events = new EventBus() {
+        Dialogs.initialize();
+
+        events = createEventBus();
+        inputs = new InputBus();
+
+        settings = Settings.load();
+        modules = new ModuleLoader(events, inputs);
+        registerModules();
+
+        listener = new InputListener(settings, events, inputs);
+        keyChooser = new KeyChooser(inputs);
+
+        tray = new Tray(events, modules.getSettingsMenus(), settings.getBaseKeyCodes());
+    }
+
+    private void registerModules(){
+        modules.registerModule(new ColorPickerModule());
+
+        for (ModuleSettings module : settings.getModules()) {
+            modules.applySettings(module);
+        }
+    }
+
+    private  EventBus createEventBus(){
+        return new EventBus() {
             @Override
             public void saveSettings() {
                 for (ModuleSettings module : settings.getModules()) settings.setModuleSettings(modules.getNewSpecificSettings(module));
+                tray.refreshPopupMenu(modules.getSettingsMenus(), settings.getBaseKeyCodes());
                 settings.save();
             }
 
@@ -63,22 +90,5 @@ public class Main {
                 System.exit(0);
             }
         };
-        inputs = new InputBus();
-
-
-        this.settings = Settings.load();
-        modules = new ModuleLoader(events, inputs);
-        modules.registerModule(new ColorPickerModule());
-
-        for (ModuleSettings module : settings.getModules()) {
-            modules.applySettings(module);
-        }
-
-        listener = new InputListener(settings, events, inputs);
-
-        tray = new Tray(events, modules.getSettingsMenus(), settings.getBaseKeyCodes());
-
-        keyChooser = new KeyChooser(inputs);
-
     }
 }

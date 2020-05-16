@@ -22,19 +22,21 @@ public class Tray {
     private EventBus bus;
 
     public Tray(EventBus eventBus, MenuItem[] moduleSettings, int[] baseBind) {
+        this.bus = eventBus;
+
         if (SystemTray.isSupported()){
-            this.bus = eventBus;
             SystemTray tray = SystemTray.getSystemTray();
+
             this.icon = new TrayIcon(getImage(), "WinUtils", getMenu(moduleSettings, baseBind));
             try {
                 tray.add(icon);
             } catch (AWTException e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Failed to create system tray icon. (I know this dialog is kinda plebig)", "WinUtils Error", JOptionPane.ERROR_MESSAGE);
+                Dialogs.showError("Failed to create system tray icon. Going to close!");
                 System.exit(0);
             }
         }else {
-            JOptionPane.showMessageDialog(null, "Sorry, but system tray is not supported by your system. (I know this dialog is kinda plebig)", "WinUtils Error", JOptionPane.ERROR_MESSAGE);
+            Dialogs.showError("Sorry, but system tray is not supported by your system.");
             System.exit(0);
         }
     }
@@ -71,7 +73,7 @@ public class Tray {
         menu.add(changeBaseBind);
 
         MenuItem about = new MenuItem("About");
-        about.addActionListener(e -> JOptionPane.showMessageDialog(null, "WinUtils Version 0.1 \n(C) 2020 - VirtCode\n This program is completely free to use, feel free to share this program among others. \n\n (I know this dialog is kinda plebig)", "About WinUtils", JOptionPane.INFORMATION_MESSAGE));
+        about.addActionListener(e -> Dialogs.showAbout());
         menu.add(about);
 
         MenuItem exit = new MenuItem("Exit");
