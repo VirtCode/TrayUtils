@@ -6,9 +6,10 @@ import ch.virt.winutils.event.InputListener;
 import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.modules.ColorPickerModule;
 import ch.virt.winutils.modules.ModuleLoader;
-import ch.virt.winutils.settings.KeyChooser;
+import ch.virt.winutils.ui.KeyChooser;
 import ch.virt.winutils.settings.ModuleSettings;
 import ch.virt.winutils.settings.Settings;
+import ch.virt.winutils.ui.Tray;
 
 /**
  * @author VirtCode
@@ -42,7 +43,7 @@ public class Main {
         listener = new InputListener(settings, events, inputs);
         keyChooser = new KeyChooser(inputs);
 
-        tray = new Tray(events, modules.getSettingsMenus(), settings.getBaseKeyCodes());
+        tray = new Tray(events, modules.getModules(), settings.getBaseKeyCodes());
     }
 
     private void registerModules(){
@@ -58,7 +59,7 @@ public class Main {
             @Override
             public void saveSettings() {
                 for (ModuleSettings module : settings.getModules()) settings.setModuleSettings(modules.getNewSpecificSettings(module));
-                tray.refreshPopupMenu(modules.getSettingsMenus(), settings.getBaseKeyCodes());
+                tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
                 settings.save();
             }
 
@@ -79,7 +80,7 @@ public class Main {
                     for (int i = 0; i < ints.length; i++) ints[i] = arg[i];
                     settings.setBaseKeyCodes(ints);
                     settings.save();
-                    tray.refreshPopupMenu(modules.getSettingsMenus(), settings.getBaseKeyCodes());
+                    tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
                     listener.refreshBaseKeyCodes(settings.getBaseKeyCodes());
                 });
             }

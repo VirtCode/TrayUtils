@@ -24,9 +24,8 @@ public class ColorPickerModule extends Module {
     private boolean cancelled;
     private boolean alreadyRunning;
 
-    @Override
-    public int getID() {
-        return 9846;
+    public ColorPickerModule() {
+        super(9846, "Colorpicker");
     }
 
     @Override
@@ -121,7 +120,7 @@ public class ColorPickerModule extends Module {
     }
 
     @Override
-    public MenuItem settingsMenu() {
+    public MenuItem[] settingsMenu() {
         CheckboxMenuItem showHelp = new CheckboxMenuItem("Show Instructions", showInstructions);
         showHelp.addItemListener(new ItemListener() {
             @Override
@@ -130,7 +129,7 @@ public class ColorPickerModule extends Module {
                 eventBus.saveSettings();
             }
         });
-        return showHelp;
+        return new MenuItem[] {showHelp};
     }
 
     @Override

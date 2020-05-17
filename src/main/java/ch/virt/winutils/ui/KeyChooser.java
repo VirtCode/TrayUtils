@@ -1,4 +1,4 @@
-package ch.virt.winutils.settings;
+package ch.virt.winutils.ui;
 
 import ch.virt.winutils.event.InputBus;
 import ch.virt.winutils.event.Listener;

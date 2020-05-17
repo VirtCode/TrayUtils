@@ -28,17 +28,17 @@ public class ModuleLoader {
     public void registerModule(Module module){
         module.setBuses(events, inputs);
         module.create();
-        modules.put(module.getID(), module);
+        modules.put(module.getId(), module);
     }
 
     public void keyEventForModule(int id){
         modules.get(id).keyStrokeCalled();
     }
 
-    public MenuItem[] getSettingsMenus(){
-        ArrayList<MenuItem> items = new ArrayList<>();
+    public MenuItem[][] getSettingsMenus(){
+        ArrayList<MenuItem[]> items = new ArrayList<>();
         for (Module value : modules.values()) if (value.settingsMenu() != null) items.add(value.settingsMenu());
-        return items.toArray(new MenuItem[0]);
+        return items.toArray(new MenuItem[0][0]);
     }
 
     public void applySettings(ModuleSettings settings){
@@ -48,5 +48,9 @@ public class ModuleLoader {
     public ModuleSettings getNewSpecificSettings(ModuleSettings settings){
         if(modules.get(settings.getId()) != null) settings.setSettings(modules.get(settings.getId()).toSettings());
         return settings;
+    }
+
+    public Module[] getModules(){
+        return modules.values().toArray(new Module[0]);
     }
 }

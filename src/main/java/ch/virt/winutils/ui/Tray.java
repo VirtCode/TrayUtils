@@ -1,16 +1,13 @@
-package ch.virt.winutils;
+package ch.virt.winutils.ui;
 
+import ch.virt.winutils.Dialogs;
 import ch.virt.winutils.event.EventBus;
-import ch.virt.winutils.settings.KeyChooser;
+import ch.virt.winutils.modules.Module;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * @author VirtCode
@@ -21,7 +18,7 @@ public class Tray {
     private TrayIcon icon;
     private EventBus bus;
 
-    public Tray(EventBus eventBus, MenuItem[] moduleSettings, int[] baseBind) {
+    public Tray(EventBus eventBus, Module[] moduleSettings, int[] baseBind) {
         this.bus = eventBus;
 
         if (SystemTray.isSupported()){
@@ -41,7 +38,7 @@ public class Tray {
         }
     }
 
-    public void refreshPopupMenu(MenuItem[] moduleSettings, int[] baseBinds){
+    public void refreshPopupMenu(Module[] moduleSettings, int[] baseBinds){
         this.icon.setPopupMenu(getMenu(moduleSettings, baseBinds));
     }
 
@@ -54,7 +51,7 @@ public class Tray {
         return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
     }
 
-    private PopupMenu getMenu(MenuItem[] moduleSettings, int[] baseBinds){
+    private PopupMenu getMenu(Module[] moduleSettings, int[] baseBinds){
         PopupMenu menu = new PopupMenu("WinUtils");
         menu.add(new MenuItem("WinUtils"));
         Integer[] integers = new Integer[baseBinds.length];
@@ -62,8 +59,8 @@ public class Tray {
         menu.add(KeyChooser.prettifyKeyArray(integers) + " + [Module]");
         menu.addSeparator();
 
-        for (MenuItem moduleSetting : moduleSettings) {
-            menu.add(moduleSetting);
+        for (Module moduleSetting : moduleSettings) {
+            menu.add(createModuleSettingsFor(moduleSetting));
         }
 
         menu.addSeparator();
@@ -82,4 +79,16 @@ public class Tray {
 
         return menu;
     }
+
+    public MenuItem createModuleSettingsFor(Module module){
+        Menu menu = new Menu(module.getName());
+        menu.add(module.getName());
+        menu.add("[Base] + C");
+        menu.addSeparator();
+        for (MenuItem settingsMenu : module.settingsMenu()) {
+            menu.add(settingsMenu);
+        }
+        return menu;
+    }
+
 }
