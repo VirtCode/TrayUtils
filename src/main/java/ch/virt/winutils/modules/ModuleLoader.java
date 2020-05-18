@@ -42,7 +42,10 @@ public class ModuleLoader {
     }
 
     public void applySettings(ModuleSettings settings){
-        if(modules.get(settings.getId()) != null) modules.get(settings.getId()).fromSettings(settings.getSettings());
+        if(modules.get(settings.getId()) != null){
+            modules.get(settings.getId()).fromSettings(settings.getSettings());
+            modules.get(settings.getId()).setKeyBind(settings.getKeyBinds());
+        }
     }
 
     public ModuleSettings getNewSpecificSettings(ModuleSettings settings){

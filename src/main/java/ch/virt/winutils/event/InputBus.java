@@ -3,11 +3,16 @@ package ch.virt.winutils.event;
 import java.util.ArrayList;
 
 /**
+ * This class forwards all keyboard and mouse events
+ * The most methods explain themselves pretty well
  * @author VirtCode
  * @version 1.0
  */
 public class InputBus {
 
+    /**
+     * Initializes the lists
+     */
     public InputBus(){
         keyPressedListeners = new ArrayList<>();
         keyReleasedListeners = new ArrayList<>();

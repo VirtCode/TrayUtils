@@ -112,7 +112,7 @@ public class Settings {
     public HashMap<Integer, Integer> getKeyModuleMap(){
         HashMap<Integer, Integer> map = new HashMap<>();
         for (ModuleSettings module : modules) {
-            map.put(module.getKeyBind(), module.getId());
+            map.put(module.getKeyBinds(), module.getId());
         }
         return map;
     }

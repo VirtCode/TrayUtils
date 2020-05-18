@@ -12,7 +12,7 @@ public class ModuleSettings {
     @Expose
     private int id;
     @Expose
-    private int keyBind;
+    private int keyBinds;
 
     /**
      * Returns the settings of that module
@@ -42,7 +42,15 @@ public class ModuleSettings {
      * Returns the additional key to be pressed for that module
      * @return additional key to be pressed for that module
      */
-    public int getKeyBind() {
-        return keyBind;
+    public int getKeyBinds() {
+        return keyBinds;
+    }
+
+    /**
+     * Sets the keybind of the module
+     * @param keyBinds keybinds to set
+     */
+    public void setKeyBinds(int keyBinds) {
+        this.keyBinds = keyBinds;
     }
 }

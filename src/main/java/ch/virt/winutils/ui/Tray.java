@@ -21,7 +21,7 @@ public class Tray {
     public Tray(EventBus eventBus, Module[] moduleSettings, int[] baseBind) {
         this.bus = eventBus;
 
-        if (SystemTray.isSupported()){
+        if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
 
             this.icon = new TrayIcon(getImage(), "WinUtils", getMenu(moduleSettings, baseBind));
@@ -32,17 +32,17 @@ public class Tray {
                 Dialogs.showError("Failed to create system tray icon. Going to close!");
                 System.exit(0);
             }
-        }else {
+        } else {
             Dialogs.showError("Sorry, but system tray is not supported by your system.");
             System.exit(0);
         }
     }
 
-    public void refreshPopupMenu(Module[] moduleSettings, int[] baseBinds){
+    public void refreshPopupMenu(Module[] moduleSettings, int[] baseBinds) {
         this.icon.setPopupMenu(getMenu(moduleSettings, baseBinds));
     }
 
-    private Image getImage(){
+    private Image getImage() {
         try {
             return ImageIO.read(Tray.class.getResourceAsStream("/logo.png"));
         } catch (IOException e) {
@@ -51,7 +51,7 @@ public class Tray {
         return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
     }
 
-    private PopupMenu getMenu(Module[] moduleSettings, int[] baseBinds){
+    private PopupMenu getMenu(Module[] moduleSettings, int[] baseBinds) {
         PopupMenu menu = new PopupMenu("WinUtils");
         menu.add(new MenuItem("WinUtils"));
         Integer[] integers = new Integer[baseBinds.length];
@@ -80,14 +80,25 @@ public class Tray {
         return menu;
     }
 
-    public MenuItem createModuleSettingsFor(Module module){
+    public MenuItem createModuleSettingsFor(Module module) {
         Menu menu = new Menu(module.getName());
         menu.add(module.getName());
-        menu.add("[Base] + C");
+        menu.add("[Base] + " + KeyChooser.prettifyKeyArray(new Integer[]{module.getKeyBind()})); //TODO: Keybind assignment, module managment
         menu.addSeparator();
+
         for (MenuItem settingsMenu : module.settingsMenu()) {
             menu.add(settingsMenu);
         }
+
+        menu.addSeparator();
+
+        MenuItem changeBind = new MenuItem("Change Keys");
+        changeBind.addActionListener(e -> bus.chooseModuleBind(module.getId()));
+        menu.add(changeBind);
+
+        MenuItem launch = new MenuItem("Launch");
+        launch.addActionListener(e -> bus.modulePressed(module.getId()));
+        menu.add(launch);
         return menu;
     }
 

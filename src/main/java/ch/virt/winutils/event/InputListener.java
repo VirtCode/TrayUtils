@@ -116,4 +116,8 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
         this.baseKeys = codes;
         this.basePressed = new boolean[codes.length];
     }
+
+    public void refreshModuleBinds(HashMap<Integer, Integer> binds){
+        this.moduleKeyMap = binds;
+    }
 }

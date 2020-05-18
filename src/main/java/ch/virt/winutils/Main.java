@@ -48,7 +48,10 @@ public class Main {
 
     private void registerModules(){
         modules.registerModule(new ColorPickerModule());
+        applyModuleSettings();
+    }
 
+    private void applyModuleSettings(){
         for (ModuleSettings module : settings.getModules()) {
             modules.applySettings(module);
         }
@@ -82,6 +85,19 @@ public class Main {
                     settings.save();
                     tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
                     listener.refreshBaseKeyCodes(settings.getBaseKeyCodes());
+                });
+            }
+
+            @Override
+            public void chooseModuleBind(int id) {
+                keyChooser.chooseOne(arg -> {
+                    ModuleSettings ms = settings.getModuleSettings(id);
+                    ms.setKeyBinds(arg);
+                    settings.setModuleSettings(ms);
+                    settings.save();
+                    applyModuleSettings();
+                    tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
+                    listener.refreshModuleBinds(settings.getKeyModuleMap());
                 });
             }
 

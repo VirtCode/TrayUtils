@@ -25,7 +25,7 @@ public class ColorPickerModule extends Module {
     private boolean alreadyRunning;
 
     public ColorPickerModule() {
-        super(9846, "Colorpicker");
+        super(9846, "Colorpicker", 46);
     }
 
     @Override

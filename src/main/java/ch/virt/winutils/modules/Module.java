@@ -53,5 +53,7 @@ public abstract class Module {
     public abstract void fromSettings(String s);
     public abstract String toSettings();
 
-
+    public void setKeyBind(int keyBind) {
+        this.keyBind = keyBind;
+    }
 }

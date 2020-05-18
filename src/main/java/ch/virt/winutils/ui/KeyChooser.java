@@ -19,13 +19,17 @@ public class KeyChooser {
     private boolean running;
     private boolean finished;
     private boolean canceled;
+    private boolean chooseOne;
 
     public KeyChooser(InputBus bus) {
         currentlyPressed = new ArrayList<>();
         bus.addKeyPressedListener(c -> {
             if (running){
                 if (c == NativeKeyEvent.VC_ENTER) finished = true;
-                else if(!currentlyPressed.contains(c)) currentlyPressed.add(c);
+                else if (chooseOne){
+                    currentlyPressed = new ArrayList<>();
+                    currentlyPressed.add(c);
+                } else if(!currentlyPressed.contains(c)) currentlyPressed.add(c);
             }
 
         });
@@ -66,6 +70,7 @@ public class KeyChooser {
     }
 
     public void choose(Listener<Integer[]> chosenKeycodes){
+        chooseOne = false;
 
         Runnable frameRun = () -> {
             running = true;
@@ -81,6 +86,36 @@ public class KeyChooser {
 
                 if (finished){
                     chosenKeycodes.called(currentlyPressed.toArray(new Integer[0]));
+                    break;
+                }
+                if (canceled) break;
+            }
+
+            frame.dispose();
+            running = false;
+        };
+
+        Thread thread = new Thread(frameRun);
+        thread.start();
+    }
+
+    public void chooseOne(Listener<Integer> chosenKeycodes){
+        chooseOne = true;
+
+        Runnable frameRun = () -> {
+            running = true;
+            canceled = false;
+            finished = false;
+            currentlyPressed = new ArrayList<>();
+
+            JDialog frame = createFrame();
+
+            while (true) {
+                JLabel label = (JLabel) frame.getContentPane().getComponent(1);
+                label.setText(keyString());
+
+                if (finished){
+                    chosenKeycodes.called(currentlyPressed.get(0));
                     break;
                 }
                 if (canceled) break;
