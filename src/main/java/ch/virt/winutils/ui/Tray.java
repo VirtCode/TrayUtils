@@ -83,7 +83,7 @@ public class Tray {
     public MenuItem createModuleSettingsFor(Module module) {
         Menu menu = new Menu(module.getName());
         menu.add(module.getName());
-        menu.add("[Base] + " + KeyChooser.prettifyKeyArray(new Integer[]{module.getKeyBind()})); //TODO: Keybind assignment, module managment
+        menu.add("[Base] + " + KeyChooser.prettifyKeyArray(new Integer[]{module.getKeyBind()}));
         menu.addSeparator();
 
         for (MenuItem settingsMenu : module.settingsMenu()) {

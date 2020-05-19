@@ -4,7 +4,7 @@ import ch.virt.winutils.event.EventBus;
 import ch.virt.winutils.event.InputBus;
 import ch.virt.winutils.event.InputListener;
 import ch.virt.winutils.event.Listener;
-import ch.virt.winutils.modules.ColorPickerModule;
+import ch.virt.winutils.modules.instances.ColorPickerModule;
 import ch.virt.winutils.modules.ModuleLoader;
 import ch.virt.winutils.ui.KeyChooser;
 import ch.virt.winutils.settings.ModuleSettings;
@@ -44,6 +44,8 @@ public class Main {
         keyChooser = new KeyChooser(inputs);
 
         tray = new Tray(events, modules.getModules(), settings.getBaseKeyCodes());
+
+        events.saveSettings();
     }
 
     private void registerModules(){
@@ -74,6 +76,11 @@ public class Main {
             @Override
             public void getNewBind(Listener<Integer[]> listener) {
                 keyChooser.choose(listener);
+            }
+
+            @Override
+            public void getNewSingleBind(Listener<Integer> listener) {
+                keyChooser.chooseOne(listener);
             }
 
             @Override

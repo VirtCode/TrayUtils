@@ -1,5 +1,6 @@
 package ch.virt.winutils.settings;
 
+import ch.virt.winutils.modules.Module;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 

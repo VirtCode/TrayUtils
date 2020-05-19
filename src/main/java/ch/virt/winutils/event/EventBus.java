@@ -25,6 +25,12 @@ public abstract class EventBus {
     public abstract void getNewBind(Listener<Integer[]> listener);
 
     /**
+     * Evokes the new key bind dialog
+     * @param listener listener for that
+     */
+    public abstract void getNewSingleBind(Listener<Integer> listener);
+
+    /**
      * Forces the client to choose a new base key bind for the application
      * (Use with care)
      */

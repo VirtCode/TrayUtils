@@ -1,16 +1,15 @@
-package ch.virt.winutils.modules;
+package ch.virt.winutils.modules.instances;
 
+import ch.virt.winutils.modules.Module;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
+import javax.xml.stream.Location;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 
 /**
@@ -23,6 +22,10 @@ public class ColorPickerModule extends Module {
     private boolean clicked;
     private boolean cancelled;
     private boolean alreadyRunning;
+
+    private boolean isMouseInside;
+    private boolean isMoving;
+    private Point inFramePos;
 
     public ColorPickerModule() {
         super(9846, "Colorpicker", 46);
@@ -40,6 +43,9 @@ public class ColorPickerModule extends Module {
             Color selected = null;
             clicked = false;
             cancelled = false;
+            inFramePos = null;
+            isMouseInside = false;
+            isMoving = false;
 
             try {
                 Robot robot = new Robot();
@@ -51,6 +57,14 @@ public class ColorPickerModule extends Module {
                     if (clicked){
                         selected = current;
                         break;
+                    }
+
+                    if (isMoving){
+                        if (inFramePos == null){
+                            inFramePos = frame.getMousePosition();
+                        }
+                        Point mouse = MouseInfo.getPointerInfo().getLocation();
+                        frame.setLocation(mouse.x - inFramePos.x, mouse.y - inFramePos.y);
                     }
                 }
             } catch (AWTException e) {
@@ -101,6 +115,32 @@ public class ColorPickerModule extends Module {
         frame.setSize(200, 100);
         Dimension bounds = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(bounds.width - 10 - 200, bounds.height - 50 - 100);
+        frame.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                isMouseInside = true;
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                isMouseInside = false;
+            }
+        });
         frame.setVisible(true);
 
         if (showInstructions) {
@@ -145,7 +185,13 @@ public class ColorPickerModule extends Module {
     @Override
     public void create() {
         inputBus.addMousePressedListener(e -> {
-            clicked = true;
+            if (isMouseInside) isMoving = true;
+            else clicked = true;
+        });
+
+        inputBus.addMouseReleasedListener(eventBus -> {
+            isMoving = false;
+            inFramePos = null;
         });
 
         inputBus.addKeyReleasedListener(e -> {
