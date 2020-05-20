@@ -1,5 +1,6 @@
 package ch.virt.winutils.settings;
 
+import ch.virt.winutils.modules.Module;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -13,6 +14,12 @@ public class ModuleSettings {
     private int id;
     @Expose
     private int keyBinds;
+
+    public ModuleSettings(Module module){
+        this.settings = module.toSettings();
+        this.id = module.getId();
+        this.keyBinds = module.getKeyBind();
+    }
 
     /**
      * Returns the settings of that module

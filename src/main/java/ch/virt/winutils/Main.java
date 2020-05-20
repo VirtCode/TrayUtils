@@ -4,6 +4,7 @@ import ch.virt.winutils.event.EventBus;
 import ch.virt.winutils.event.InputBus;
 import ch.virt.winutils.event.InputListener;
 import ch.virt.winutils.event.Listener;
+import ch.virt.winutils.modules.Module;
 import ch.virt.winutils.modules.instances.ColorPickerModule;
 import ch.virt.winutils.modules.ModuleLoader;
 import ch.virt.winutils.ui.KeyChooser;
@@ -63,7 +64,11 @@ public class Main {
         return new EventBus() {
             @Override
             public void saveSettings() {
-                for (ModuleSettings module : settings.getModules()) settings.setModuleSettings(modules.getNewSpecificSettings(module));
+                System.out.println("saving");
+                for (Module module: modules.getModules()){
+                    if (settings.getModuleSettings(module.getId()) != null) settings.setModuleSettings(modules.getNewSpecificSettings(settings.getModuleSettings(module.getId())));
+                    else settings.setModuleSettings(new ModuleSettings(module));
+                }
                 tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
                 settings.save();
             }

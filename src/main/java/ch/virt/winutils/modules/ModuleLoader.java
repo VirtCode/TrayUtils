@@ -49,6 +49,7 @@ public class ModuleLoader {
     }
 
     public ModuleSettings getNewSpecificSettings(ModuleSettings settings){
+        System.out.println("doing");
         if(modules.get(settings.getId()) != null) settings.setSettings(modules.get(settings.getId()).toSettings());
         return settings;
     }

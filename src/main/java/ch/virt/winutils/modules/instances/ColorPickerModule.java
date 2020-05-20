@@ -1,12 +1,12 @@
 package ch.virt.winutils.modules.instances;
 
 import ch.virt.winutils.modules.Module;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.ColorUIResource;
-import javax.xml.stream.Location;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
@@ -18,6 +18,8 @@ import java.awt.geom.RoundRectangle2D;
  */
 public class ColorPickerModule extends Module {
     private boolean showInstructions = true;
+    private int frameX = -1;
+    private int frameY = -1;
 
     private boolean clicked;
     private boolean cancelled;
@@ -40,6 +42,7 @@ public class ColorPickerModule extends Module {
         Runnable frameRun = () -> {
 
             JDialog frame = createFrame();
+
             Color selected = null;
             clicked = false;
             cancelled = false;
@@ -65,6 +68,10 @@ public class ColorPickerModule extends Module {
                         }
                         Point mouse = MouseInfo.getPointerInfo().getLocation();
                         frame.setLocation(mouse.x - inFramePos.x, mouse.y - inFramePos.y);
+
+                        Point frameLocation = frame.getLocation();
+                        frameX = frameLocation.x;
+                        frameY = frameLocation.y;
                     }
                 }
             } catch (AWTException e) {
@@ -111,25 +118,21 @@ public class ColorPickerModule extends Module {
         JDialog frame = new JDialog();
         frame.setUndecorated(true);
         frame.setAlwaysOnTop(true);
+
         frame.setShape(new RoundRectangle2D.Double(0, 0, 200, 100, 5, 5));
         frame.setSize(200, 100);
+
         Dimension bounds = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(bounds.width - 10 - 200, bounds.height - 50 - 100);
+        if(frameX == -1 && frameY == -1) frame.setLocation(bounds.width - 10 - 200, bounds.height - 50 - 100);
+        else frame.setLocation(frameX, frameY);
+
         frame.addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
-
+            public void mouseClicked(MouseEvent e) { }
             @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
+            public void mousePressed(MouseEvent e) { }
             @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
+            public void mouseReleased(MouseEvent e) { }
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -144,7 +147,7 @@ public class ColorPickerModule extends Module {
         frame.setVisible(true);
 
         if (showInstructions) {
-            JLabel instructions = new JLabel("Click to Select, Esc to Cancel.", SwingConstants.CENTER);
+            JLabel instructions = new JLabel("Click to Select. Esc to Cancel.", SwingConstants.CENTER);
             instructions.setFont(new Font("Calibri", Font.PLAIN, 12));
             instructions.setSize(200, 20);
             instructions.setLocation(0, 80);
@@ -162,24 +165,39 @@ public class ColorPickerModule extends Module {
     @Override
     public MenuItem[] settingsMenu() {
         CheckboxMenuItem showHelp = new CheckboxMenuItem("Show Instructions", showInstructions);
-        showHelp.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                showInstructions = e.getStateChange() == ItemEvent.SELECTED;
-                eventBus.saveSettings();
-            }
+        showHelp.addItemListener(e -> {
+            showInstructions = e.getStateChange() == ItemEvent.SELECTED;
+            eventBus.saveSettings();
         });
-        return new MenuItem[] {showHelp};
+
+        MenuItem resetPosition = new MenuItem("Reset Position");
+        resetPosition.addActionListener(e -> {
+            frameX = -1;
+            frameY = -1;
+            eventBus.saveSettings();
+        });
+
+        return new MenuItem[] {showHelp, resetPosition};
     }
 
     @Override
     public void fromSettings(String s) {
-        showInstructions = Boolean.parseBoolean(s);
-    }
+        JsonObject object = new Gson().fromJson(s, JsonObject.class);
 
+        frameX = object.get("frame_x").getAsInt();
+        frameY = object.get("frame_y").getAsInt();
+        showInstructions = object.get("instructions").getAsBoolean();
+    }
     @Override
     public String toSettings() {
-        return showInstructions + "";
+        JsonObject object = new JsonObject();
+
+        object.addProperty("instructions", showInstructions);
+        object.addProperty("frame_x", frameX);
+        object.addProperty("frame_y", frameY);
+        System.out.println("creating");
+
+        return new Gson().toJson(object);
     }
 
     @Override
@@ -189,9 +207,13 @@ public class ColorPickerModule extends Module {
             else clicked = true;
         });
 
-        inputBus.addMouseReleasedListener(eventBus -> {
-            isMoving = false;
-            inFramePos = null;
+        inputBus.addMouseReleasedListener(e -> {
+            if (isMoving){
+                isMoving = false;
+                inFramePos = null;
+
+                eventBus.saveSettings();
+            }
         });
 
         inputBus.addKeyReleasedListener(e -> {
