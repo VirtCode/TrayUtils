@@ -195,7 +195,6 @@ public class ColorPickerModule extends Module {
         object.addProperty("instructions", showInstructions);
         object.addProperty("frame_x", frameX);
         object.addProperty("frame_y", frameY);
-        System.out.println("creating");
 
         return new Gson().toJson(object);
     }

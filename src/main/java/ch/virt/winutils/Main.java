@@ -64,7 +64,6 @@ public class Main {
         return new EventBus() {
             @Override
             public void saveSettings() {
-                System.out.println("saving");
                 for (Module module: modules.getModules()){
                     if (settings.getModuleSettings(module.getId()) != null) settings.setModuleSettings(modules.getNewSpecificSettings(settings.getModuleSettings(module.getId())));
                     else settings.setModuleSettings(new ModuleSettings(module));
