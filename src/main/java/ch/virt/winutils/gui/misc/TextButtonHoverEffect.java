@@ -9,14 +9,14 @@ import java.awt.event.MouseListener;
  * @author VirtCode
  * @version 1.0
  */
-public class ColorHoverEffect implements MouseListener {
+public class TextButtonHoverEffect implements MouseListener {
 
     private boolean mouseIn;
 
     private final Color idle, hover, pressed;
     private final JComponent component;
 
-    public ColorHoverEffect(Color idle, Color hover, Color pressed, JComponent component) {
+    public TextButtonHoverEffect(Color idle, Color hover, Color pressed, JComponent component) {
         this.idle = idle;
         this.hover = hover;
         this.pressed = pressed;

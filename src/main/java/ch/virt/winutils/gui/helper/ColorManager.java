@@ -11,4 +11,8 @@ public class ColorManager {
     public static Color buttonHover = new Color(0x444444);
     public static Color buttonPressed = new Color(0x393939);
     public static Color buttonForeground = Color.WHITE;
+
+    public static Color imageIdle = new Color(0xFFFFFFFF, true);
+    public static Color imageHover = new Color(0xC4C4C4);
+    public static Color imagePressed = new Color(0x878787);
 }
