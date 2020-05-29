@@ -37,7 +37,7 @@ public class ComponentFactory {
         return button;
     }
 
-    public static JPanel createPanel(){
+    public static JPanel createGroup(){
         JPanel panel = new JPanel();
         panel.setOpaque(false);
         return panel;
@@ -47,8 +47,8 @@ public class ComponentFactory {
         JButton button = new JButton(new ImageIcon(getImage(path)));
         button.setBorderPainted(false);
         button.setFocusPainted(false);
-        button.setBackground(new Color(0x0000000, true));
-        button.setBackground(new Color(0x0000000, true));
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
         button.addMouseListener(new ImageButtonHoverEffect(ColorManager.imageIdle, ColorManager.imageHover, ColorManager.imagePressed, button));
         return button;
     }
@@ -60,12 +60,12 @@ public class ComponentFactory {
     }
 
     public static JFrame getMainFrame(){
-        JFrame frame = new JFrame(); //Do correct repainting
+        JFrame frame = new JFrame();
         frame.setUndecorated(true);
-        frame.setBackground(new Color(0x0000000, true));
+        frame.setBackground(Color.BLACK);
 
         JPanel panel = new JPanel();
-        panel.setBackground(new Color(0x94383838, true));
+        panel.setBackground(ColorManager.frameBackground);
 
         frame.setContentPane(panel);
         return frame;
