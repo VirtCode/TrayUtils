@@ -1,11 +1,14 @@
 package ch.virt.winutils.gui.helper;
 
+import ch.virt.winutils.Main;
 import ch.virt.winutils.gui.misc.ImageButtonHoverEffect;
 import ch.virt.winutils.gui.misc.TextButtonHoverEffect;
 import ch.virt.winutils.ui.Tray;
+import jdk.jshell.execution.JdiDefaultExecutionControl;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -44,13 +47,21 @@ public class ComponentFactory {
     }
 
     public static JButton createImageButton(String path){
-        JButton button = new JButton(new ImageIcon(getImage(path)));
+        JButton button = new JButton(new ImageIcon(ResourceHelper.loadImage(path)));
         button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.addMouseListener(new ImageButtonHoverEffect(ColorManager.imageIdle, ColorManager.imageHover, ColorManager.imagePressed, button));
+        button.setMargin(getImageInsets());
         return button;
+    }
+
+    public static JLabel createFlatImage(String path){
+        JLabel label = new JLabel(new ImageIcon(ResourceHelper.colorizeImage(ResourceHelper.loadImage(path), ColorManager.imageIdle)));
+        label.setOpaque(false);
+        label.setBorder(new EmptyBorder(getImageInsets()));
+        return label;
     }
 
     public static JLabel createLabel(){
@@ -59,8 +70,8 @@ public class ComponentFactory {
         return label;
     }
 
-    public static JFrame getMainFrame(){
-        JFrame frame = new JFrame();
+    public static JDialog getMainFrame(){
+        JDialog frame = new JDialog();
         frame.setUndecorated(true);
         frame.setBackground(Color.BLACK);
 
@@ -71,13 +82,7 @@ public class ComponentFactory {
         return frame;
     }
 
-    public static Image getImage(String path) {
-        try {
-            return ImageIO.read(Tray.class.getResourceAsStream(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    private static Insets getImageInsets() {
+        return new Insets(4, 4, 4, 4);
     }
-
 }

@@ -1,5 +1,7 @@
 package ch.virt.winutils.gui.misc;
 
+import ch.virt.winutils.gui.helper.ResourceHelper;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -25,7 +27,7 @@ public class ImageButtonHoverEffect implements MouseListener {
         this.pressed = pressed;
         this.component = component;
 
-        component.setIcon(new ImageIcon(colorize(((ImageIcon)component.getIcon()).getImage(), idle)));
+        component.setIcon(new ImageIcon(ResourceHelper.colorizeImage(((ImageIcon)component.getIcon()).getImage(), idle)));
     }
 
     @Override
@@ -33,51 +35,24 @@ public class ImageButtonHoverEffect implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        component.setIcon(new ImageIcon(colorize(((ImageIcon)component.getIcon()).getImage(), pressed)));
+        component.setIcon(new ImageIcon(ResourceHelper.colorizeImage(((ImageIcon)component.getIcon()).getImage(), pressed)));
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(mouseIn) component.setIcon(new ImageIcon(colorize(((ImageIcon)component.getIcon()).getImage(), hover)));
-        else component.setIcon(new ImageIcon(colorize(((ImageIcon)component.getIcon()).getImage(), idle)));
+        if(mouseIn) component.setIcon(new ImageIcon(ResourceHelper.colorizeImage(((ImageIcon)component.getIcon()).getImage(), hover)));
+        else component.setIcon(new ImageIcon(ResourceHelper.colorizeImage(((ImageIcon)component.getIcon()).getImage(), idle)));
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        component.setIcon(new ImageIcon(colorize(((ImageIcon)component.getIcon()).getImage(), hover)));
+        component.setIcon(new ImageIcon(ResourceHelper.colorizeImage(((ImageIcon)component.getIcon()).getImage(), hover)));
         mouseIn = true;
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        component.setIcon(new ImageIcon(colorize(((ImageIcon)component.getIcon()).getImage(), idle)));
+        component.setIcon(new ImageIcon(ResourceHelper.colorizeImage(((ImageIcon)component.getIcon()).getImage(), idle)));
         mouseIn = false;
-    }
-
-    private Image colorize(Image image, Color color){
-        BufferedImage converted = toBuffered(image);
-        BufferedImage result = new BufferedImage(converted.getWidth(), converted.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        for (int i = 0; i < converted.getHeight(); i++) {
-            for (int j = 0; j < converted.getWidth(); j++) {
-                Color pixel = new Color(color.getRed(), color.getGreen(), color.getBlue(), new Color(converted.getRGB(j, i), true).getAlpha());
-                result.setRGB(j, i, pixel.getRGB());
-            }
-        }
-
-        return result;
-    }
-
-    private BufferedImage toBuffered(Image image){
-        if (image instanceof BufferedImage) {
-            return (BufferedImage) image;
-        }
-
-        BufferedImage bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(image, 0, 0, null);
-        bGr.dispose();
-
-        return bimage;
     }
 }
