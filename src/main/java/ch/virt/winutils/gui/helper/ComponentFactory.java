@@ -1,17 +1,12 @@
 package ch.virt.winutils.gui.helper;
 
-import ch.virt.winutils.Main;
 import ch.virt.winutils.gui.misc.ImageButtonHoverEffect;
 import ch.virt.winutils.gui.misc.TextButtonHoverEffect;
-import ch.virt.winutils.ui.Tray;
-import jdk.jshell.execution.JdiDefaultExecutionControl;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * @author VirtCode
@@ -46,6 +41,12 @@ public class ComponentFactory {
         return panel;
     }
 
+    public static JPanel createPanel(Color color){
+        JPanel panel = new JPanel();
+        panel.setBackground(color);
+        return panel;
+    }
+
     public static JButton createImageButton(String path){
         JButton button = new JButton(new ImageIcon(ResourceHelper.loadImage(path)));
         button.setBorderPainted(false);
@@ -76,10 +77,34 @@ public class ComponentFactory {
         frame.setBackground(Color.BLACK);
 
         JPanel panel = new JPanel();
-        panel.setBackground(ColorManager.frameBackground);
+        panel.setBackground(ColorManager.mainBackground);
 
         frame.setContentPane(panel);
         return frame;
+    }
+
+    public static JPopupMenu createPopupMenu(){
+        JPopupMenu menu = new JPopupMenu();
+        menu.setBorder(new LineBorder(ColorManager.menuSeparator, 1));
+        menu.setBackground(ColorManager.menuBackgroundIdle);
+        menu.setForeground(ColorManager.menuForeground);
+        return menu;
+    }
+
+    public static JSeparator createMenuSeparator(){
+        JSeparator separator = new JSeparator();
+        separator.setBackground(ColorManager.menuSeparator);
+        separator.setForeground(ColorManager.menuSeparator);
+        return separator;
+    }
+
+    public static JMenuItem createMenuItem(){
+        JMenuItem item = new JMenuItem();
+        item.setBackground(ColorManager.menuBackgroundIdle);
+        item.setForeground(ColorManager.menuForeground);
+        item.setBorderPainted(false);
+        item.addMouseListener(new TextButtonHoverEffect(ColorManager.menuBackgroundIdle, ColorManager.menuBackgroundHover, ColorManager.menuBackgroundPressed, item));
+        return item;
     }
 
     private static Insets getImageInsets() {

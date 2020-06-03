@@ -1,9 +1,15 @@
 package ch.virt.winutils.gui;
 
+import ch.virt.winutils.gui.components.ModuleGui;
+import ch.virt.winutils.gui.components.SettingsGui;
+import ch.virt.winutils.gui.components.TopBarGui;
+import ch.virt.winutils.gui.helper.ColorManager;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author VirtCode
@@ -13,71 +19,25 @@ public class Gui {
 
     private JDialog frame;
 
-    private JPanel topRegion;
-    private JPanel sideRegion;
-    private JPanel mainRegion;
+    private JPanel currentMain;
 
-    private JButton menuButton;
-    private JLabel titleLabel;
-    private JLabel titleImage;
+    private TopBarGui topBar;
+    private ModuleGui modules;
+    private SettingsGui settings;
 
     public Gui(){
         setupFrame();
-        createRegions();
-        assignRegions();
+
         createComponents();
         assignComponents();
+
         finishFrame();
     }
 
     public void setupFrame() {
+        //ComponentFactory.initialize();
         frame = ComponentFactory.getMainFrame();
-        adjustFrame(frame);
-        frame.setLayout(new BorderLayout());
-    }
 
-    public void finishFrame(){
-        frame.setVisible(true);
-    }
-
-    public void createRegions(){
-        topRegion = ComponentFactory.createGroup();
-        topRegion.setLayout(new BorderLayout());
-
-        sideRegion = ComponentFactory.createGroup();
-        sideRegion.setLayout(new BoxLayout(sideRegion, BoxLayout.Y_AXIS));
-
-        mainRegion = ComponentFactory.createGroup();
-    }
-
-    public void assignRegions(){
-        frame.add(topRegion, BorderLayout.PAGE_START);
-        frame.add(sideRegion, BorderLayout.LINE_START);
-        frame.add(mainRegion, BorderLayout.CENTER);
-    }
-
-    public void createComponents(){
-        createTopBar();
-    }
-
-    public void assignComponents(){
-        assignTopBar();
-    }
-
-    public void createTopBar(){
-        titleImage = ComponentFactory.createFlatImage("/icon_medium.png");
-        titleLabel = ComponentFactory.createLabel();
-        titleLabel.setText("WinUtils Settings");
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        menuButton = ComponentFactory.createImageButton("/menu_burger.png");
-    }
-    public void assignTopBar(){
-        topRegion.add(titleImage, BorderLayout.LINE_START);
-        topRegion.add(titleLabel, BorderLayout.CENTER);
-        topRegion.add(menuButton, BorderLayout.LINE_END);
-    }
-
-    public void adjustFrame(JDialog frame){
         Dimension bounds = Toolkit.getDefaultToolkit().getScreenSize();
         int width = bounds.width / 6;
         int height = bounds.height / 2;
@@ -86,5 +46,33 @@ public class Gui {
 
         frame.setSize(width, height);
         frame.setLocation(x, y);
+
+        frame.setLayout(new BorderLayout());
+    }
+
+    public void finishFrame(){
+        frame.setVisible(true);
+    }
+
+    public void createComponents(){
+        topBar = new TopBarGui();
+        topBar.init();
+
+        modules = new ModuleGui();
+        modules.init();
+
+        settings = new SettingsGui();
+        settings.init();
+    }
+
+    public void assignComponents(){
+        frame.add(topBar.getParent(), BorderLayout.PAGE_START);
+        setMain(modules.getParent());
+    }
+
+    public void setMain(JPanel panel){
+        if(currentMain != null) frame.remove(currentMain);
+        currentMain = panel;
+        frame.add(currentMain);
     }
 }

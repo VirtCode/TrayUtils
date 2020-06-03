@@ -18,6 +18,14 @@ public class ColorManager {
     public static Color imageHover = new Color(0xC4C4C4);
     public static Color imagePressed = new Color(0x878787);
 
-    public static Color frameBackground = new Color(0x232323);
+    public static Color topBackground = new Color(0x242424);
+    public static Color sideBackground = new Color(0x2A2A2A);
+    public static Color mainBackground = new Color(0x313131);
+
+    public static Color menuSeparator = new Color(0x5F5F5F);
+    public static Color menuBackgroundIdle = new Color(0x404040);
+    public static Color menuBackgroundHover = new Color(0x5F5F5F);
+    public static Color menuBackgroundPressed = new Color(0x6C6C6C);
+    public static Color menuForeground = Color.WHITE;
 
 }
