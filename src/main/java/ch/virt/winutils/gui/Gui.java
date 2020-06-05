@@ -1,18 +1,14 @@
 package ch.virt.winutils.gui;
 
-import ch.virt.winutils.Dialogs;
 import ch.virt.winutils.event.GuiEventBus;
 import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.gui.components.ModuleGui;
 import ch.virt.winutils.gui.components.SettingsGui;
 import ch.virt.winutils.gui.components.TopBarGui;
-import ch.virt.winutils.gui.helper.ColorManager;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author VirtCode
@@ -76,13 +72,15 @@ public class Gui {
 
     public void assignComponents(){
         frame.add(topBar.getParent(), BorderLayout.PAGE_START);
-        setMain(modules.getParent());
+        setMain(settings.getParent());
     }
 
     public void setMain(JPanel panel){
         if(currentMain != null) frame.remove(currentMain);
         currentMain = panel;
         frame.add(currentMain);
+        frame.revalidate();
+        frame.repaint();
     }
 
     public void exitGui(){
@@ -95,7 +93,13 @@ public class Gui {
         return new GuiEventBus() {
             @Override
             public void openSettings() {
-                Dialogs.showError("Settings not implemented yet!");
+                setMain(settings.getParent());
+                //Dialogs.showError("Settings not implemented yet!");
+            }
+
+            @Override
+            public void openModules() {
+                setMain(modules.getParent());
             }
         };
     }

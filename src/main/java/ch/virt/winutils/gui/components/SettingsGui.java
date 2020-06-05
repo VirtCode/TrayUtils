@@ -14,6 +14,9 @@ public class SettingsGui {
 
     private JPanel parentGroup;
 
+    private JCheckBox checkBox;
+    private JTextField textField;
+
     public void init(){
         create();
         assign();
@@ -21,11 +24,16 @@ public class SettingsGui {
     }
 
     private void create(){
-        parentGroup = ComponentFactory.createGroup();
+        parentGroup = ComponentFactory.createPanel(ColorManager.mainBackground);
+        parentGroup.setLayout(new BoxLayout(parentGroup, BoxLayout.Y_AXIS));
+        checkBox = ComponentFactory.createCheckBox();
+        checkBox.setText("This is a checkbox");
+        textField = ComponentFactory.createTextField();
     }
 
     private void assign(){
-
+        parentGroup.add(checkBox);
+        parentGroup.add(textField);
     }
 
     private void listen(){

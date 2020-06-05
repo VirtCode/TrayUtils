@@ -107,6 +107,24 @@ public class ComponentFactory {
         return item;
     }
 
+    public static JCheckBox createCheckBox(){
+        JCheckBox checkBox = new JCheckBox();
+        checkBox.setOpaque(false);
+        checkBox.setForeground(ColorManager.checkBoxText);
+        checkBox.setBorderPainted(false);
+        return checkBox;
+    }
+
+    public static JTextField createTextField(){
+        JTextField textField = new JTextField();
+        textField.setBackground(ColorManager.textFieldIdle);
+        textField.setCaretColor(ColorManager.textFieldCursor);
+        textField.setSelectionColor(ColorManager.textFieldSelection);
+        textField.setForeground(ColorManager.textFieldText);
+        textField.setBorder(new EmptyBorder(4,8,4,8));
+        return textField;
+    }
+
     private static Insets getImageInsets() {
         return new Insets(4, 4, 4, 4);
     }

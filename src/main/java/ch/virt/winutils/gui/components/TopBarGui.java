@@ -28,6 +28,7 @@ public class TopBarGui {
     private JMenuItem exit;
     private JMenuItem about;
     private JMenuItem website;
+    private JMenuItem modules;
     private JMenuItem settings;
 
     private final MainEventBus mainEvents;
@@ -66,12 +67,15 @@ public class TopBarGui {
         website.setText("Website");
         settings = ComponentFactory.createMenuItem();
         settings.setText("Settings");
+        modules = ComponentFactory.createMenuItem();
+        modules.setText("Modules");
     }
 
     private void assign(){
         parentGroup.add(titleImage, BorderLayout.LINE_START);
         parentGroup.add(titleLabel, BorderLayout.CENTER);
         parentGroup.add(menuButton, BorderLayout.LINE_END);
+        mainMenu.add(modules);
         mainMenu.add(settings);
         mainMenu.add(ComponentFactory.createMenuSeparator());
         mainMenu.add(website);
@@ -89,7 +93,7 @@ public class TopBarGui {
         about.addActionListener(e -> Dialogs.showAbout());
         website.addActionListener(e -> {
             try {
-                Desktop.getDesktop().browse(new URI("google.ch"));
+                Desktop.getDesktop().browse(new URI("https://google.ch"));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             } catch (URISyntaxException uriSyntaxException) {
@@ -97,6 +101,7 @@ public class TopBarGui {
             }
         });
         settings.addActionListener(e -> guiEvents.openSettings());
+        settings.addActionListener(e -> guiEvents.openModules());
     }
 
     public JPanel getParent(){

@@ -11,4 +11,9 @@ public abstract class GuiEventBus {
      */
     public abstract void openSettings();
 
+    /**
+     * Evokes the modules gui
+     */
+    public abstract void openModules();
+
 }

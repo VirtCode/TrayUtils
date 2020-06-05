@@ -6,6 +6,6 @@ import ch.virt.winutils.gui.Gui;
  */
 public class Test {
     public static void main(String[] args) {
-        new Gui();
+        //new Gui();
     }
 }

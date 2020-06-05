@@ -14,7 +14,7 @@ public class ColorManager {
     public static Color buttonPressed = new Color(0x393939);
     public static Color buttonForeground = Color.WHITE;
 
-    public static Color imageIdle = new Color(0xFFFFFFFF, true);
+    public static Color imageIdle = new Color(0xFFFFFF);
     public static Color imageHover = new Color(0xC4C4C4);
     public static Color imagePressed = new Color(0x878787);
 
@@ -27,5 +27,13 @@ public class ColorManager {
     public static Color menuBackgroundHover = new Color(0x5F5F5F);
     public static Color menuBackgroundPressed = new Color(0x6C6C6C);
     public static Color menuForeground = Color.WHITE;
+
+    public static Color textFieldCursor = Color.WHITE;
+    public static Color textFieldSelection = new Color(0x6AFFFFFF, true);
+    public static Color textFieldText = new Color(0xC7C7C7);
+    public static Color textFieldIdle = new Color(0x404040);
+    public static Color textFieldFocus = new Color(0x4f4f4f);
+
+    public static Color checkBoxText = Color.WHITE;
 
 }
