@@ -1,5 +1,8 @@
 package ch.virt.winutils.gui;
 
+import ch.virt.winutils.Dialogs;
+import ch.virt.winutils.event.GuiEventBus;
+import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.gui.components.ModuleGui;
 import ch.virt.winutils.gui.components.SettingsGui;
 import ch.virt.winutils.gui.components.TopBarGui;
@@ -25,7 +28,13 @@ public class Gui {
     private ModuleGui modules;
     private SettingsGui settings;
 
-    public Gui(){
+    private MainEventBus mainEvents;
+    private GuiEventBus guiEvents;
+
+    public Gui(MainEventBus eventBus){
+        this.mainEvents = eventBus;
+        this.guiEvents = createGuiEvents();
+
         setupFrame();
 
         createComponents();
@@ -55,7 +64,7 @@ public class Gui {
     }
 
     public void createComponents(){
-        topBar = new TopBarGui();
+        topBar = new TopBarGui(mainEvents, guiEvents);
         topBar.init();
 
         modules = new ModuleGui();
@@ -74,5 +83,20 @@ public class Gui {
         if(currentMain != null) frame.remove(currentMain);
         currentMain = panel;
         frame.add(currentMain);
+    }
+
+    public void exitGui(){
+        frame.setVisible(false);
+        frame.dispose();
+        frame = null;
+    }
+
+    private GuiEventBus createGuiEvents(){
+        return new GuiEventBus() {
+            @Override
+            public void openSettings() {
+                Dialogs.showError("Settings not implemented yet!");
+            }
+        };
     }
 }

@@ -6,7 +6,7 @@ package ch.virt.winutils.event;
  * @author VirtCode
  * @version 1.0
  */
-public abstract class EventBus {
+public abstract class MainEventBus {
     /**
      * Saves the settings
      */
@@ -46,4 +46,14 @@ public abstract class EventBus {
      * Quits the application
      */
     public abstract void quit();
+
+    /**
+     * Hides the Gui of the application
+     */
+    public abstract void hideGui();
+
+    /**
+     * Shows the Gui of the application
+     */
+    public abstract void showGui();
 }

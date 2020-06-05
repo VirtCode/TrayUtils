@@ -1,11 +1,13 @@
 package ch.virt.winutils.ui;
 
 import ch.virt.winutils.Dialogs;
-import ch.virt.winutils.event.EventBus;
+import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.modules.Module;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -16,15 +18,42 @@ import java.io.IOException;
 public class Tray {
 
     private TrayIcon icon;
-    private EventBus bus;
+    private MainEventBus bus;
 
-    public Tray(EventBus eventBus, Module[] moduleSettings, int[] baseBind) {
+    public Tray(MainEventBus eventBus, Module[] moduleSettings, int[] baseBind) {
         this.bus = eventBus;
 
         if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
 
             this.icon = new TrayIcon(getImage(), "WinUtils", getMenu(moduleSettings, baseBind));
+            this.icon.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON1) bus.showGui();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+
             try {
                 tray.add(icon);
             } catch (AWTException e) {

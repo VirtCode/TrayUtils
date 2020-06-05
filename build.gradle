@@ -9,7 +9,27 @@ repositories {
     mavenCentral()
 }
 
+
+configurations {
+    extraLibs
+}
+
 dependencies {
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.1stleg:jnativehook:2.1.0'
+    compile 'com.google.code.gson:gson:2.8.6'
+    compile 'com.1stleg:jnativehook:2.1.0'
+
+    configurations.extraLibs.extendsFrom(configurations.compile)
+}
+
+
+jar {
+    manifest {
+        attributes(
+                "Class-Path": configurations.compile.collect { it.getName() }.join(' '), "Main-Class": "ch.virt.winutils.Main")
+
+    }
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
 }

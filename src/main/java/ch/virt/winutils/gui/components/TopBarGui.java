@@ -1,10 +1,16 @@
 package ch.virt.winutils.gui.components;
 
+import ch.virt.winutils.Dialogs;
+import ch.virt.winutils.event.GuiEventBus;
+import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.gui.helper.ColorManager;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * @author VirtCode
@@ -23,6 +29,14 @@ public class TopBarGui {
     private JMenuItem about;
     private JMenuItem website;
     private JMenuItem settings;
+
+    private final MainEventBus mainEvents;
+    private final GuiEventBus guiEvents;
+
+    public TopBarGui(MainEventBus mainEvents, GuiEventBus guiEvents){
+        this.mainEvents = mainEvents;
+        this.guiEvents = guiEvents;
+    }
 
     public void init(){
         create();
@@ -69,6 +83,20 @@ public class TopBarGui {
 
     private void listen(){
         menuButton.addActionListener(e -> mainMenu.show(menuButton, menuButton.getWidth() - mainMenu.getWidth(), menuButton.getHeight()));
+
+        exit.addActionListener(e -> mainEvents.quit());
+        hide.addActionListener(e -> mainEvents.hideGui());
+        about.addActionListener(e -> Dialogs.showAbout());
+        website.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().browse(new URI("google.ch"));
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } catch (URISyntaxException uriSyntaxException) {
+                uriSyntaxException.printStackTrace();
+            }
+        });
+        settings.addActionListener(e -> guiEvents.openSettings());
     }
 
     public JPanel getParent(){

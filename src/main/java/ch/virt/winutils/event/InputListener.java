@@ -1,7 +1,5 @@
 package ch.virt.winutils.event;
 
-import ch.virt.winutils.event.EventBus;
-import ch.virt.winutils.event.InputBus;
 import ch.virt.winutils.settings.Settings;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -21,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class InputListener implements NativeKeyListener, NativeMouseListener {
 
-    private EventBus events;
+    private MainEventBus events;
     private InputBus inputs;
 
     private HashMap<Integer, Integer> moduleKeyMap;
@@ -29,7 +27,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
     private int[] baseKeys;
     private boolean[] basePressed;
 
-    public InputListener(Settings settings, EventBus events, InputBus inputs){
+    public InputListener(Settings settings, MainEventBus events, InputBus inputs){
         this.baseKeys = settings.getBaseKeyCodes();
         this.basePressed = new boolean[baseKeys.length];
 

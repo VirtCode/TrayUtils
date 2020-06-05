@@ -1,9 +1,10 @@
 package ch.virt.winutils;
 
-import ch.virt.winutils.event.EventBus;
+import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.event.InputBus;
 import ch.virt.winutils.event.InputListener;
 import ch.virt.winutils.event.Listener;
+import ch.virt.winutils.gui.GuiWrapper;
 import ch.virt.winutils.modules.Module;
 import ch.virt.winutils.modules.instances.ColorPickerModule;
 import ch.virt.winutils.modules.ModuleLoader;
@@ -24,12 +25,14 @@ public class Main {
     private final Settings settings;
     private final ModuleLoader modules;
 
-    private final EventBus events;
+    private final MainEventBus events;
     private final InputBus inputs;
     private final InputListener listener;
              
     private final Tray tray;
     private final KeyChooser keyChooser;
+
+    private final GuiWrapper gui;
 
     public Main(){
         Dialogs.initialize();
@@ -46,6 +49,8 @@ public class Main {
 
         tray = new Tray(events, modules.getModules(), settings.getBaseKeyCodes());
 
+        gui = new GuiWrapper(events);
+
         events.saveSettings();
     }
 
@@ -60,8 +65,8 @@ public class Main {
         }
     }
 
-    private  EventBus createEventBus(){
-        return new EventBus() {
+    private MainEventBus createEventBus(){
+        return new MainEventBus() {
             @Override
             public void saveSettings() {
                 for (Module module: modules.getModules()){
@@ -116,6 +121,16 @@ public class Main {
             public void quit() {
                 settings.save();
                 System.exit(0);
+            }
+
+            @Override
+            public void hideGui() {
+                Dialogs.showError("Hiding not implemented yet!");
+            }
+
+            @Override
+            public void showGui() {
+                gui.toggle();
             }
         };
     }

@@ -1,8 +1,7 @@
 package ch.virt.winutils.modules;
 
-import ch.virt.winutils.event.EventBus;
+import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.event.InputBus;
-import ch.virt.winutils.modules.Module;
 import ch.virt.winutils.settings.ModuleSettings;
 
 import java.awt.*;
@@ -16,10 +15,10 @@ import java.util.HashMap;
 public class ModuleLoader {
 
     private HashMap<Integer, Module> modules;
-    private EventBus events;
+    private MainEventBus events;
     private InputBus inputs;
 
-    public ModuleLoader(EventBus bus, InputBus inputs) {
+    public ModuleLoader(MainEventBus bus, InputBus inputs) {
         modules = new HashMap<>();
         this.events = bus;
         this.inputs = inputs;
