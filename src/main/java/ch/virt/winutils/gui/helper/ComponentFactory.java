@@ -111,6 +111,7 @@ public class ComponentFactory {
         JCheckBox checkBox = new JCheckBox();
         checkBox.setOpaque(false);
         checkBox.setForeground(ColorManager.checkBoxText);
+        checkBox.setBorder(new EmptyBorder(8,0,8,8));
         checkBox.setBorderPainted(false);
         return checkBox;
     }
@@ -121,8 +122,25 @@ public class ComponentFactory {
         textField.setCaretColor(ColorManager.textFieldCursor);
         textField.setSelectionColor(ColorManager.textFieldSelection);
         textField.setForeground(ColorManager.textFieldText);
-        textField.setBorder(new EmptyBorder(4,8,4,8));
+        textField.setBorder(new EmptyBorder(8,8,8,8));
+        textField.setMaximumSize(new Dimension(1000, textField.getMinimumSize().height));
         return textField;
+    }
+
+    public static JLabel createHeader(){
+        JLabel label = createLabel();
+        label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 24));
+        return label;
+    }
+
+    public static JLabel createSubHeader(){
+        JLabel label = createLabel();
+        label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 18));
+        return label;
+    }
+
+    public static Insets getSubInsets(int index){
+        return new Insets(4, 16 * index + 4, 4, 4);
     }
 
     private static Insets getImageInsets() {

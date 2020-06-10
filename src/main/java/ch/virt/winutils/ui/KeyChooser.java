@@ -15,11 +15,11 @@ import java.util.ArrayList;
  */
 public class KeyChooser {
 
-    private ArrayList<Integer> currentlyPressed;
-    private boolean running;
-    private boolean finished;
-    private boolean canceled;
-    private boolean chooseOne;
+    private static ArrayList<Integer> currentlyPressed;
+    private static boolean running;
+    private static boolean finished;
+    private static boolean canceled;
+    private static boolean chooseOne;
 
     public KeyChooser(InputBus bus) {
         currentlyPressed = new ArrayList<>();
@@ -42,7 +42,7 @@ public class KeyChooser {
         });
     }
 
-    public JDialog createFrame(){
+    public static JDialog createFrame(){
         JDialog frame = new JDialog();
         frame.setUndecorated(true);
         frame.setAlwaysOnTop(true);
@@ -69,7 +69,7 @@ public class KeyChooser {
         return frame;
     }
 
-    public void choose(Listener<Integer[]> chosenKeycodes){
+    public static void choose(Listener<Integer[]> chosenKeycodes){
         chooseOne = false;
 
         Runnable frameRun = () -> {
@@ -99,7 +99,7 @@ public class KeyChooser {
         thread.start();
     }
 
-    public void chooseOne(Listener<Integer> chosenKeycodes){
+    public static void chooseOne(Listener<Integer> chosenKeycodes){
         chooseOne = true;
 
         Runnable frameRun = () -> {
@@ -129,7 +129,7 @@ public class KeyChooser {
         thread.start();
     }
 
-    private String keyString(){
+    private static String keyString(){
         return prettifyKeyArray(currentlyPressed.toArray(new Integer[0]));
     }
 

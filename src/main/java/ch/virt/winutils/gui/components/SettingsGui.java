@@ -1,9 +1,15 @@
 package ch.virt.winutils.gui.components;
 
+import ch.virt.winutils.Utils;
+import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.gui.helper.ColorManager;
 import ch.virt.winutils.gui.helper.ComponentFactory;
+import ch.virt.winutils.gui.helper.GroupFactory;
+import ch.virt.winutils.ui.KeyChooser;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
@@ -14,8 +20,20 @@ public class SettingsGui {
 
     private JPanel parentGroup;
 
-    private JCheckBox checkBox;
-    private JTextField textField;
+    private JLabel titleLabel;
+    private JPanel settings;
+
+    private JLabel generalSubTitle;
+    private JPanel generalSettings;
+
+    private JPanel changeBaseKeyBind;
+    private JPanel changeGuiKeyBind;
+
+    private JLabel advancedSubTitle;
+    private JPanel advancedSettings;
+
+    private JCheckBox startWithOS;
+
 
     public void init(){
         create();
@@ -26,14 +44,45 @@ public class SettingsGui {
     private void create(){
         parentGroup = ComponentFactory.createPanel(ColorManager.mainBackground);
         parentGroup.setLayout(new BoxLayout(parentGroup, BoxLayout.Y_AXIS));
-        checkBox = ComponentFactory.createCheckBox();
-        checkBox.setText("This is a checkbox");
-        textField = ComponentFactory.createTextField();
+        parentGroup.setBorder(new EmptyBorder(8, 16, 8,16));
+
+        titleLabel = ComponentFactory.createHeader();
+        titleLabel.setText("Settings");
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        settings = GroupFactory.createSettingSubCategory();
+        generalSettings = GroupFactory.createSettingSubCategory();
+        advancedSettings = GroupFactory.createSettingSubCategory();
+
+        generalSubTitle = ComponentFactory.createSubHeader();
+        generalSubTitle.setText("General");
+
+        changeBaseKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44, 45}, "Base Keybind", arg -> {});
+
+        changeGuiKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44, 45}, "Gui Keybind", arg -> {});
+
+        advancedSubTitle = ComponentFactory.createSubHeader();
+        advancedSubTitle.setText("Advanced");
+
+        startWithOS = ComponentFactory.createCheckBox();
+        startWithOS.setText("Start with OS");
+
     }
 
     private void assign(){
-        parentGroup.add(checkBox);
-        parentGroup.add(textField);
+        parentGroup.add(titleLabel);
+        parentGroup.add(settings);
+
+        settings.add(generalSubTitle);
+        settings.add(generalSettings);
+
+        generalSettings.add(changeBaseKeyBind);
+        generalSettings.add(changeGuiKeyBind);
+
+        settings.add(advancedSubTitle);
+        settings.add(advancedSettings);
+
+        advancedSettings.add(startWithOS);
     }
 
     private void listen(){
