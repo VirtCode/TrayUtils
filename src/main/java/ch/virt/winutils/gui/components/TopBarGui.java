@@ -101,7 +101,7 @@ public class TopBarGui {
             }
         });
         settings.addActionListener(e -> guiEvents.openSettings());
-        settings.addActionListener(e -> guiEvents.openModules());
+        modules.addActionListener(e -> guiEvents.openModules());
     }
 
     public JPanel getParent(){

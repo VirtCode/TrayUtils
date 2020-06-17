@@ -57,9 +57,9 @@ public class SettingsGui {
         generalSubTitle = ComponentFactory.createSubHeader();
         generalSubTitle.setText("General");
 
-        changeBaseKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44, 45}, "Base Keybind", arg -> {});
+        changeBaseKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44, 45}, "Base Keybind", arg -> {}, false);
 
-        changeGuiKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44, 45}, "Gui Keybind", arg -> {});
+        changeGuiKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44}, "Gui Keybind", arg -> {}, true);
 
         advancedSubTitle = ComponentFactory.createSubHeader();
         advancedSubTitle.setText("Advanced");

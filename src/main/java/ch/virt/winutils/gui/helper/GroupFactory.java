@@ -24,7 +24,7 @@ public class GroupFactory {
         return category;
     }
 
-    public static JPanel createChangeKeyBindModule(int[] currentBind, String bindTitle, Listener<Integer[]> bindChosen){
+    public static JPanel createChangeKeyBindModule(int[] currentBind, String bindTitle, Listener<Integer[]> bindChosen, boolean single){
         JButton button = ComponentFactory.createButton();
         button.setText("Change");
 
@@ -34,10 +34,16 @@ public class GroupFactory {
         JLabel bindDisplay = ComponentFactory.createLabel();
         bindDisplay.setText(KeyChooser.prettifyKeyArray(Utils.fromPrimitive(currentBind)));
 
-        button.addActionListener(e -> KeyChooser.choose(f -> {
-            bindDisplay.setText(KeyChooser.prettifyKeyArray(f));
-            bindChosen.called(f);
-        }));
+        button.addActionListener(e -> {
+            if(!single) KeyChooser.choose(f -> {
+                bindDisplay.setText(KeyChooser.prettifyKeyArray(f));
+                bindChosen.called(f);
+            });
+            else KeyChooser.chooseOne(d -> {
+                bindDisplay.setText(KeyChooser.prettifyKeyArray(new Integer[]{d}));
+                bindChosen.called(new Integer[]{d});
+            });
+        });
 
         JPanel main = ComponentFactory.createGroup();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));

@@ -43,7 +43,7 @@ public class Gui {
         //ComponentFactory.initialize();
         frame = ComponentFactory.getMainFrame();
 
-        Dimension bounds = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
         int width = bounds.width / 6;
         int height = bounds.height / 2;
         int x = bounds.width - width - 10;
@@ -94,11 +94,11 @@ public class Gui {
             @Override
             public void openSettings() {
                 setMain(settings.getParent());
-                //Dialogs.showError("Settings not implemented yet!");
             }
 
             @Override
             public void openModules() {
+                System.out.println("ahh shit");
                 setMain(modules.getParent());
             }
         };
