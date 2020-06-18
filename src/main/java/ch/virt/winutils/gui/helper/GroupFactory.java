@@ -29,7 +29,7 @@ public class GroupFactory {
         button.setText("Change");
 
         JLabel title = ComponentFactory.createLabel();
-        title.setText(bindTitle);
+        title.setText(bindTitle + ":");
 
         JLabel bindDisplay = ComponentFactory.createLabel();
         bindDisplay.setText(KeyChooser.prettifyKeyArray(Utils.fromPrimitive(currentBind)));

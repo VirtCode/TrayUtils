@@ -3,6 +3,7 @@ package ch.virt.winutils.modules;
 import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.event.InputBus;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -16,16 +17,22 @@ public abstract class Module {
     protected int id;
     protected String name;
     protected int keyBind;
+    protected String icon;
 
     public void setBuses(MainEventBus eventBus, InputBus inputBus) {
         this.inputBus = inputBus;
         this.eventBus = eventBus;
     }
 
-    public Module(int id, String name, int keyBind){
+    public Module(int id, String name, int keyBind, String icon){
         this.id = id;
         this.name = name;
         this.keyBind = keyBind;
+        this.icon = icon;
+    }
+
+    public String getIconPath(){
+        return icon;
     }
 
     public int getId() {
@@ -48,7 +55,7 @@ public abstract class Module {
 
     public abstract void keyStrokeCalled();
 
-    public abstract MenuItem[] settingsMenu();
+    public abstract JPanel settingsMenu();
 
     public abstract void fromSettings(String s);
     public abstract String toSettings();

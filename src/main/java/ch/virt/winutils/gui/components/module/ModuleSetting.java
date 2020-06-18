@@ -5,6 +5,7 @@ import ch.virt.winutils.gui.helper.ComponentFactory;
 import ch.virt.winutils.gui.helper.GroupFactory;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author VirtCode
@@ -39,6 +40,7 @@ public class ModuleSetting {
 
     private void create(String title){
         this.parent = ComponentFactory.createGroup();
+        parent.setLayout(new BoxLayout(parent, BoxLayout.Y_AXIS));
 
         this.title = ComponentFactory.createHeader();
         this.title.setText(title);
@@ -56,7 +58,9 @@ public class ModuleSetting {
         parent.add(settings);
 
         settings.add(launch);
+        settings.add(Box.createRigidArea(new Dimension(0, 8)));
         settings.add(changeBind);
+        settings.add(Box.createRigidArea(new Dimension(0, 8)));
 
         settings.add(specific);
     }

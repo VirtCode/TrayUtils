@@ -6,6 +6,8 @@ import ch.virt.winutils.gui.components.ModuleGui;
 import ch.virt.winutils.gui.components.SettingsGui;
 import ch.virt.winutils.gui.components.TopBarGui;
 import ch.virt.winutils.gui.helper.ComponentFactory;
+import ch.virt.winutils.modules.ModuleLoader;
+import ch.virt.winutils.settings.Settings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,9 +29,15 @@ public class Gui {
     private MainEventBus mainEvents;
     private GuiEventBus guiEvents;
 
-    public Gui(MainEventBus eventBus){
+    private Settings settingsInstance;
+    private ModuleLoader modulesInstance;
+
+    public Gui(MainEventBus eventBus, Settings settings, ModuleLoader modules){
         this.mainEvents = eventBus;
         this.guiEvents = createGuiEvents();
+
+        settingsInstance = settings;
+        modulesInstance = modules;
 
         setupFrame();
 
@@ -63,16 +71,16 @@ public class Gui {
         topBar = new TopBarGui(mainEvents, guiEvents);
         topBar.init();
 
-        modules = new ModuleGui();
+        modules = new ModuleGui(modulesInstance);
         modules.init();
 
-        settings = new SettingsGui();
+        settings = new SettingsGui(settingsInstance);
         settings.init();
     }
 
     public void assignComponents(){
         frame.add(topBar.getParent(), BorderLayout.PAGE_START);
-        setMain(settings.getParent());
+        setMain(modules.getParent());
     }
 
     public void setMain(JPanel panel){
@@ -98,7 +106,6 @@ public class Gui {
 
             @Override
             public void openModules() {
-                System.out.println("ahh shit");
                 setMain(modules.getParent());
             }
         };

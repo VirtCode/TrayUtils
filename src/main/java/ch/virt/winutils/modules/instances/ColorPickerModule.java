@@ -1,5 +1,6 @@
 package ch.virt.winutils.modules.instances;
 
+import ch.virt.winutils.gui.helper.ComponentFactory;
 import ch.virt.winutils.modules.Module;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -7,6 +8,8 @@ import com.google.gson.JsonObject;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
@@ -30,7 +33,7 @@ public class ColorPickerModule extends Module {
     private Point inFramePos;
 
     public ColorPickerModule() {
-        super(9846, "Colorpicker", 46);
+        super(9846, "Colorpicker", 46, "/color_picker.png");
     }
 
     @Override
@@ -163,21 +166,31 @@ public class ColorPickerModule extends Module {
     }
 
     @Override
-    public MenuItem[] settingsMenu() {
-        CheckboxMenuItem showHelp = new CheckboxMenuItem("Show Instructions", showInstructions);
-        showHelp.addItemListener(e -> {
-            showInstructions = e.getStateChange() == ItemEvent.SELECTED;
+    public JPanel settingsMenu() {
+        JCheckBox checkBox = ComponentFactory.createCheckBox();
+        checkBox.setText("Show Instructions");
+        checkBox.setSelected(showInstructions);
+
+        checkBox.addChangeListener(e -> {
+            showInstructions = checkBox.isSelected();
             eventBus.saveSettings();
         });
 
-        MenuItem resetPosition = new MenuItem("Reset Position");
-        resetPosition.addActionListener(e -> {
+        JButton button = ComponentFactory.createButton();
+        button.setText("Reset Position");
+        button.addActionListener(e -> {
             frameX = -1;
             frameY = -1;
             eventBus.saveSettings();
         });
 
-        return new MenuItem[] {showHelp, resetPosition};
+        JPanel panel = ComponentFactory.createGroup();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        panel.add(button);
+        panel.add(checkBox);
+
+        return panel;
     }
 
     @Override

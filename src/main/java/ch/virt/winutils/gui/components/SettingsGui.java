@@ -5,6 +5,7 @@ import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.gui.helper.ColorManager;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 import ch.virt.winutils.gui.helper.GroupFactory;
+import ch.virt.winutils.settings.Settings;
 import ch.virt.winutils.ui.KeyChooser;
 
 import javax.swing.*;
@@ -21,7 +22,7 @@ public class SettingsGui {
     private JPanel parentGroup;
 
     private JLabel titleLabel;
-    private JPanel settings;
+    private JPanel settingsPanel;
 
     private JLabel generalSubTitle;
     private JPanel generalSettings;
@@ -34,6 +35,11 @@ public class SettingsGui {
 
     private JCheckBox startWithOS;
 
+    private final Settings settings;
+
+    public SettingsGui(Settings settings) {
+        this.settings = settings;
+    }
 
     public void init(){
         create();
@@ -50,7 +56,7 @@ public class SettingsGui {
         titleLabel.setText("Settings");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        settings = GroupFactory.createSettingSubCategory();
+        settingsPanel = GroupFactory.createSettingSubCategory();
         generalSettings = GroupFactory.createSettingSubCategory();
         advancedSettings = GroupFactory.createSettingSubCategory();
 
@@ -71,16 +77,16 @@ public class SettingsGui {
 
     private void assign(){
         parentGroup.add(titleLabel);
-        parentGroup.add(settings);
+        parentGroup.add(settingsPanel);
 
-        settings.add(generalSubTitle);
-        settings.add(generalSettings);
+        settingsPanel.add(generalSubTitle);
+        settingsPanel.add(generalSettings);
 
         generalSettings.add(changeBaseKeyBind);
         generalSettings.add(changeGuiKeyBind);
 
-        settings.add(advancedSubTitle);
-        settings.add(advancedSettings);
+        settingsPanel.add(advancedSubTitle);
+        settingsPanel.add(advancedSettings);
 
         advancedSettings.add(startWithOS);
     }

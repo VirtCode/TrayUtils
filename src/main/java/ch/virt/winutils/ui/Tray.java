@@ -88,16 +88,6 @@ public class Tray {
         menu.add(KeyChooser.prettifyKeyArray(integers) + " + [Module]");
         menu.addSeparator();
 
-        for (Module moduleSetting : moduleSettings) {
-            menu.add(createModuleSettingsFor(moduleSetting));
-        }
-
-        menu.addSeparator();
-
-        MenuItem changeBaseBind = new MenuItem("Change base Keys");
-        changeBaseBind.addActionListener(e -> bus.chooseBaseBind());
-        menu.add(changeBaseBind);
-
         MenuItem about = new MenuItem("About");
         about.addActionListener(e -> Dialogs.showAbout());
         menu.add(about);
@@ -106,28 +96,6 @@ public class Tray {
         exit.addActionListener(e -> bus.quit());
         menu.add(exit);
 
-        return menu;
-    }
-
-    public MenuItem createModuleSettingsFor(Module module) {
-        Menu menu = new Menu(module.getName());
-        menu.add(module.getName());
-        menu.add("[Base] + " + KeyChooser.prettifyKeyArray(new Integer[]{module.getKeyBind()}));
-        menu.addSeparator();
-
-        for (MenuItem settingsMenu : module.settingsMenu()) {
-            menu.add(settingsMenu);
-        }
-
-        menu.addSeparator();
-
-        MenuItem changeBind = new MenuItem("Change Keys");
-        changeBind.addActionListener(e -> bus.chooseModuleBind(module.getId()));
-        menu.add(changeBind);
-
-        MenuItem launch = new MenuItem("Launch");
-        launch.addActionListener(e -> bus.modulePressed(module.getId()));
-        menu.add(launch);
         return menu;
     }
 

@@ -34,11 +34,6 @@ public class ModuleLoader {
         modules.get(id).keyStrokeCalled();
     }
 
-    public MenuItem[][] getSettingsMenus(){
-        ArrayList<MenuItem[]> items = new ArrayList<>();
-        for (Module value : modules.values()) if (value.settingsMenu() != null) items.add(value.settingsMenu());
-        return items.toArray(new MenuItem[0][0]);
-    }
 
     public void applySettings(ModuleSettings settings){
         if(modules.get(settings.getId()) != null){

@@ -49,7 +49,7 @@ public class Main {
 
         tray = new Tray(events, modules.getModules(), settings.getBaseKeyCodes());
 
-        gui = new GuiWrapper(events);
+        gui = new GuiWrapper(events, settings, modules);
 
         events.saveSettings();
     }
