@@ -1,6 +1,8 @@
 package ch.virt.winutils.event;
 
 
+import ch.virt.winutils.settings.ModuleSettings;
+
 /**
  * This class forwards event to the main class
  * @author VirtCode
@@ -19,18 +21,6 @@ public abstract class MainEventBus {
     public abstract void modulePressed(int id);
 
     /**
-     * Evokes the new key bind dialog
-     * @param listener listener for that
-     */
-    public abstract void getNewBind(Listener<Integer[]> listener);
-
-    /**
-     * Evokes the new key bind dialog
-     * @param listener listener for that
-     */
-    public abstract void getNewSingleBind(Listener<Integer> listener);
-
-    /**
      * Forces the client to choose a new base key bind for the application
      * (Use with care)
      */
@@ -41,6 +31,13 @@ public abstract class MainEventBus {
      * @param id id of that module
      */
     public abstract void chooseModuleBind(int id);
+
+    /**
+     * Returns the settings for the correspondent modules
+     * @param id settings
+     * @return modules
+     */
+    public abstract ModuleSettings getModuleSettings(int id);
 
     /**
      * Quits the application

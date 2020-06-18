@@ -11,11 +11,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * Used to create mini modules used in the ui
  * @author VirtCode
  * @version 1.0
  */
 public class GroupFactory {
 
+    /**
+     * Creates a sub category inset panel for settings
+     * @return panel
+     */
     public static JPanel createSettingSubCategory(){
         JPanel category = ComponentFactory.createGroup();
         category.setBorder(new EmptyBorder(ComponentFactory.getSubInsets(1)));
@@ -24,6 +29,14 @@ public class GroupFactory {
         return category;
     }
 
+    /**
+     * Creates a panel with stuff on to change a keybind
+     * @param currentBind currently chosen keybind
+     * @param bindTitle title of the bind
+     * @param bindChosen listener if the bind is chosen
+     * @param single whether only one key is chosen
+     * @return panel
+     */
     public static JPanel createChangeKeyBindModule(int[] currentBind, String bindTitle, Listener<Integer[]> bindChosen, boolean single){
         JButton button = ComponentFactory.createButton();
         button.setText("Change");

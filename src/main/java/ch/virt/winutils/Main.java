@@ -83,16 +83,6 @@ public class Main {
             }
 
             @Override
-            public void getNewBind(Listener<Integer[]> listener) {
-                keyChooser.choose(listener);
-            }
-
-            @Override
-            public void getNewSingleBind(Listener<Integer> listener) {
-                keyChooser.chooseOne(listener);
-            }
-
-            @Override
             public void chooseBaseBind() {
                 keyChooser.choose(arg -> {
                     int[] ints = new int[arg.length];
@@ -115,6 +105,11 @@ public class Main {
                     tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
                     listener.refreshModuleBinds(settings.getKeyModuleMap());
                 });
+            }
+
+            @Override
+            public ModuleSettings getModuleSettings(int id) {
+                return settings.getModuleSettings(id);
             }
 
             @Override

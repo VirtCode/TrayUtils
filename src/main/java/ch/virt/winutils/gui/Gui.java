@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * This is the main gui instance
  * @author VirtCode
  * @version 1.0
  */
@@ -32,6 +33,12 @@ public class Gui {
     private Settings settingsInstance;
     private ModuleLoader modulesInstance;
 
+    /**
+     * Creates the main instance
+     * @param eventBus main event bus
+     * @param settings settings to manipulate
+     * @param modules modules to use
+     */
     public Gui(MainEventBus eventBus, Settings settings, ModuleLoader modules){
         this.mainEvents = eventBus;
         this.guiEvents = createGuiEvents();
@@ -47,6 +54,9 @@ public class Gui {
         finishFrame();
     }
 
+    /**
+     * Sets the frame up
+     */
     public void setupFrame() {
         //ComponentFactory.initialize();
         frame = ComponentFactory.getMainFrame();
@@ -63,26 +73,39 @@ public class Gui {
         frame.setLayout(new BorderLayout());
     }
 
+    /**
+     * Finishes the frame to display
+     */
     public void finishFrame(){
         frame.setVisible(true);
     }
 
+    /**
+     * Creates the various components used
+     */
     public void createComponents(){
         topBar = new TopBarGui(mainEvents, guiEvents);
         topBar.init();
 
-        modules = new ModuleGui(modulesInstance);
+        modules = new ModuleGui(modulesInstance, mainEvents);
         modules.init();
 
         settings = new SettingsGui(settingsInstance);
         settings.init();
     }
 
+    /**
+     * Assigns those components
+     */
     public void assignComponents(){
         frame.add(topBar.getParent(), BorderLayout.PAGE_START);
         setMain(modules.getParent());
     }
 
+    /**
+     * Sets the currently displayed panel (settings or modules)
+     * @param panel panel to display
+     */
     public void setMain(JPanel panel){
         if(currentMain != null) frame.remove(currentMain);
         currentMain = panel;
@@ -91,12 +114,19 @@ public class Gui {
         frame.repaint();
     }
 
+    /**
+     * Removes the gui
+     */
     public void exitGui(){
         frame.setVisible(false);
         frame.dispose();
         frame = null;
     }
 
+    /**
+     * Creates the gui event bus
+     * @return bus
+     */
     private GuiEventBus createGuiEvents(){
         return new GuiEventBus() {
             @Override

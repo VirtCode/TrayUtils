@@ -1,7 +1,7 @@
 package ch.virt.winutils.gui.components;
 
-import ch.virt.winutils.event.Listener;
-import ch.virt.winutils.gui.components.module.ModuleSetting;
+import ch.virt.winutils.event.MainEventBus;
+import ch.virt.winutils.gui.components.module.ModuleSettingsDisplay;
 import ch.virt.winutils.gui.helper.ColorManager;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 import ch.virt.winutils.modules.Module;
@@ -9,10 +9,10 @@ import ch.virt.winutils.modules.ModuleLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.module.FindException;
 import java.util.HashMap;
 
 /**
+ * This class is the module gui part
  * @author VirtCode
  * @version 1.0
  */
@@ -22,17 +22,23 @@ public class ModuleGui {
     private JPanel sideGroup;
     private JPanel mainGroup;
 
-    private HashMap<Integer, ModuleSetting> moduleMap;
+    private HashMap<Integer, ModuleSettingsDisplay> moduleMap;
     private final ModuleLoader modules;
+    private final MainEventBus bus;
 
-    public ModuleGui(ModuleLoader modules) {
+    /**
+     * Creates a ModuleGui
+     * @param modules module loader with the modules
+     * @param bus main event bus
+     */
+    public ModuleGui(ModuleLoader modules, MainEventBus bus) {
         this.modules = modules;
+        this.bus = bus;
     }
 
-    public ModuleLoader getModules() {
-        return modules;
-    }
-
+    /**
+     * Initialises the gui
+     */
     public void init(){
         create();
         assign();
@@ -41,6 +47,10 @@ public class ModuleGui {
         buildModules();
     }
 
+    /**
+     * Builds all the displays
+     * @see ModuleSettingsDisplay
+     */
     private void buildModules(){
         moduleMap = new HashMap<>();
 
@@ -50,15 +60,23 @@ public class ModuleGui {
             String icon = module.getIconPath();
             JPanel panel = module.settingsMenu();
 
-            addModule(new ModuleSetting(id, title, icon, panel, this::setModule));
+            addModule(new ModuleSettingsDisplay(id, title, icon, panel, bus, this::setModule));
         }
     }
 
-    private void addModule(ModuleSetting setting){
+    /**
+     * Adds a ModuleSettingsDisplay to the gui
+     * @param setting display to add
+     */
+    private void addModule(ModuleSettingsDisplay setting){
         moduleMap.put(setting.getId(), setting);
         sideGroup.add(setting.getTriggerButton());
     }
 
+    /**
+     * Sets the module that should be shown
+     * @param id id of that module
+     */
     private void setModule(Integer id){
         mainGroup.removeAll();
         mainGroup.add(moduleMap.get(id).getGui(), BorderLayout.CENTER);
@@ -66,6 +84,9 @@ public class ModuleGui {
         mainGroup.repaint();
     }
 
+    /**
+     * Creates the components
+     */
     private void create(){
         parentGroup = ComponentFactory.createGroup();
         parentGroup.setLayout(new BorderLayout());
@@ -77,15 +98,25 @@ public class ModuleGui {
         mainGroup.setLayout(new BorderLayout());
     }
 
+    /**
+     * Assigns the components
+     */
     private void assign(){
         parentGroup.add(sideGroup, BorderLayout.LINE_START);
         parentGroup.add(mainGroup, BorderLayout.CENTER);
     }
 
+    /**
+     * Assigns listeners to the components
+     */
     private void listen(){
 
     }
 
+    /**
+     * Returns the parent panel of the group
+     * @return panel
+     */
     public JPanel getParent(){
         return parentGroup;
     }

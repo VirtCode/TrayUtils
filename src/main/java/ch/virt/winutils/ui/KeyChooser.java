@@ -71,6 +71,7 @@ public class KeyChooser {
     }
 
     public static void choose(Listener<Integer[]> chosenKeycodes){
+        if (running) return;
         chooseOne = false;
 
         Runnable frameRun = () -> {
@@ -101,6 +102,7 @@ public class KeyChooser {
     }
 
     public static void chooseOne(Listener<Integer> chosenKeycodes){
+        if (running) return;
         chooseOne = true;
 
         Runnable frameRun = () -> {

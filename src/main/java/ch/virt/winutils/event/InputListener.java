@@ -27,6 +27,12 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
     private int[] baseKeys;
     private boolean[] basePressed;
 
+    /**
+     * Creates an InputListener
+     * @param settings settings to use for binds
+     * @param events events to call
+     * @param inputs inputs to call
+     */
     public InputListener(Settings settings, MainEventBus events, InputBus inputs){
         this.baseKeys = settings.getBaseKeyCodes();
         this.basePressed = new boolean[baseKeys.length];
@@ -39,6 +45,9 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
         initNativeHook();
     }
 
+    /**
+     * Sets the JNativeHook library up
+     */
     private void initNativeHook(){
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
@@ -110,11 +119,19 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
         inputs.mouseReleased(nativeMouseEvent.getButton());
     }
 
+    /**
+     * Refreshes the base keycodes on the fly
+     * @param codes
+     */
     public void refreshBaseKeyCodes(int[] codes){
         this.baseKeys = codes;
         this.basePressed = new boolean[codes.length];
     }
 
+    /**
+     * Refreshes the module keycodes on the fly
+     * @param binds new binds
+     */
     public void refreshModuleBinds(HashMap<Integer, Integer> binds){
         this.moduleKeyMap = binds;
     }

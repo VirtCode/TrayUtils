@@ -3,6 +3,7 @@ package ch.virt.winutils.gui.helper;
 import java.awt.*;
 
 /**
+ * This class contains a lot of the colors used in the gui
  * @author VirtCode
  * @version 1.0
  */

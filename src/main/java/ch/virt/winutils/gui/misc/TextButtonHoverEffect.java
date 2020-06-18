@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /**
+ * Hover effect for text buttons
  * @author VirtCode
  * @version 1.0
  */
@@ -16,6 +17,13 @@ public class TextButtonHoverEffect implements MouseListener {
     private final Color idle, hover, pressed;
     private final JComponent component;
 
+    /**
+     * Creates a text button hover effect
+     * @param idle idle background color
+     * @param hover hover background color
+     * @param pressed pressed background color
+     * @param component target to use the effect on
+     */
     public TextButtonHoverEffect(Color idle, Color hover, Color pressed, JComponent component) {
         this.idle = idle;
         this.hover = hover;

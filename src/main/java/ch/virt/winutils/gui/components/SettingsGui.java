@@ -1,19 +1,16 @@
 package ch.virt.winutils.gui.components;
 
 import ch.virt.winutils.Utils;
-import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.gui.helper.ColorManager;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 import ch.virt.winutils.gui.helper.GroupFactory;
 import ch.virt.winutils.settings.Settings;
-import ch.virt.winutils.ui.KeyChooser;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
 
 /**
+ * This class is the settings gui part of the ui
  * @author VirtCode
  * @version 1.0
  */
@@ -37,22 +34,32 @@ public class SettingsGui {
 
     private final Settings settings;
 
+    /**
+     * Creates the settings gui
+     * @param settings settings to manipulate
+     */
     public SettingsGui(Settings settings) {
         this.settings = settings;
     }
 
+    /**
+     * Initializes the gui
+     */
     public void init(){
         create();
         assign();
         listen();
     }
 
+    /**
+     * Creates the components
+     */
     private void create(){
         parentGroup = ComponentFactory.createPanel(ColorManager.mainBackground);
         parentGroup.setLayout(new BoxLayout(parentGroup, BoxLayout.Y_AXIS));
         parentGroup.setBorder(new EmptyBorder(8, 16, 8,16));
 
-        titleLabel = ComponentFactory.createHeader();
+        titleLabel = ComponentFactory.createLabelHeader();
         titleLabel.setText("Settings");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -60,14 +67,14 @@ public class SettingsGui {
         generalSettings = GroupFactory.createSettingSubCategory();
         advancedSettings = GroupFactory.createSettingSubCategory();
 
-        generalSubTitle = ComponentFactory.createSubHeader();
+        generalSubTitle = ComponentFactory.createLabelSubHeader();
         generalSubTitle.setText("General");
 
-        changeBaseKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44, 45}, "Base Keybind", arg -> {}, false);
+        changeBaseKeyBind = GroupFactory.createChangeKeyBindModule(settings.getBaseKeyCodes(), "Base Keybind", arg -> {settings.setBaseKeyCodes(Utils.toPrimitive(arg)); settings.save();}, false);
 
         changeGuiKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44}, "Gui Keybind", arg -> {}, true);
 
-        advancedSubTitle = ComponentFactory.createSubHeader();
+        advancedSubTitle = ComponentFactory.createLabelSubHeader();
         advancedSubTitle.setText("Advanced");
 
         startWithOS = ComponentFactory.createCheckBox();
@@ -75,6 +82,9 @@ public class SettingsGui {
 
     }
 
+    /**
+     * Assigns the components
+     */
     private void assign(){
         parentGroup.add(titleLabel);
         parentGroup.add(settingsPanel);
@@ -91,10 +101,16 @@ public class SettingsGui {
         advancedSettings.add(startWithOS);
     }
 
+    /**
+     * Assigns listeners to the components
+     */
     private void listen(){
-
     }
 
+    /**
+     * Returns the parent panel
+     * @return panel
+     */
     public JPanel getParent(){
         return parentGroup;
     }

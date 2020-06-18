@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 /**
+ * This class should be an image hover effect used on image buttons
  * @author VirtCode
  * @version 1.0
  *
@@ -21,6 +22,13 @@ public class ImageButtonHoverEffect implements MouseListener {
     private final Color idle, hover, pressed;
     private final JButton component;
 
+    /**
+     * Creates a image hover effect
+     * @param idle idle image color
+     * @param hover hover image color
+     * @param pressed pressed image color
+     * @param component target component
+     */
     public ImageButtonHoverEffect(Color idle, Color hover, Color pressed, JButton component) {
         this.idle = idle;
         this.hover = hover;

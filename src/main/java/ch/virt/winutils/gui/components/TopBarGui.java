@@ -13,6 +13,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
+ * This class is the top bar visible on the gui
  * @author VirtCode
  * @version 1.0
  */
@@ -34,17 +35,28 @@ public class TopBarGui {
     private final MainEventBus mainEvents;
     private final GuiEventBus guiEvents;
 
+    /**
+     * Creates the top bar gui
+     * @param mainEvents main eventbus
+     * @param guiEvents gui eventbus
+     */
     public TopBarGui(MainEventBus mainEvents, GuiEventBus guiEvents){
         this.mainEvents = mainEvents;
         this.guiEvents = guiEvents;
     }
 
+    /**
+     * initializes the gui
+     */
     public void init(){
         create();
         assign();
         listen();
     }
 
+    /**
+     * Creates the components
+     */
     private void create(){
         parentGroup = ComponentFactory.createPanel(ColorManager.topBackground);
         parentGroup.setLayout(new BorderLayout());
@@ -71,6 +83,9 @@ public class TopBarGui {
         modules.setText("Modules");
     }
 
+    /**
+     * Assigns the components
+     */
     private void assign(){
         parentGroup.add(titleImage, BorderLayout.LINE_START);
         parentGroup.add(titleLabel, BorderLayout.CENTER);
@@ -85,6 +100,9 @@ public class TopBarGui {
         mainMenu.add(exit);
     }
 
+    /**
+     * Applies listeners to the components
+     */
     private void listen(){
         menuButton.addActionListener(e -> mainMenu.show(menuButton, menuButton.getWidth() - mainMenu.getWidth(), menuButton.getHeight()));
 
@@ -104,6 +122,10 @@ public class TopBarGui {
         modules.addActionListener(e -> guiEvents.openModules());
     }
 
+    /**
+     * Returns the parent panel
+     * @return parent
+     */
     public JPanel getParent(){
         return parentGroup;
     }

@@ -16,6 +16,7 @@ import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 
 /**
+ * This class represents the color picker module
  * @author VirtCode
  * @version 1.0
  */
@@ -32,6 +33,9 @@ public class ColorPickerModule extends Module {
     private boolean isMoving;
     private Point inFramePos;
 
+    /**
+     * Creates a color picker module
+     */
     public ColorPickerModule() {
         super(9846, "Colorpicker", 46, "/color_picker.png");
     }
@@ -41,6 +45,9 @@ public class ColorPickerModule extends Module {
         if(!alreadyRunning) showJFrame();
     }
 
+    /**
+     * shows the picker frame
+     */
     private void showJFrame(){
         Runnable frameRun = () -> {
 
@@ -93,6 +100,11 @@ public class ColorPickerModule extends Module {
         thread.start();
     }
 
+    /**
+     * Refreshes the frame color
+     * @param frame frame to set
+     * @param color color to set
+     */
     private void setFrameColor(JDialog frame, Color color){
         int luma = (int) (0.2126 * color.getRed() + 0.7152 * color.getGreen() + 0.0722 * color.getBlue());
 
@@ -109,14 +121,27 @@ public class ColorPickerModule extends Module {
 
     }
 
+    /**
+     * converts a color to a hex string
+     * @param color color
+     * @return hex string
+     */
     private String toHex(Color color){
         return Integer.toHexString(color.getRGB()).substring(2).toUpperCase();
     }
 
+    /**
+     * Copies the color to the clipboard
+     * @param color color to copy
+     */
     public void colorSelected(Color color){
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(toHex(color)), null);
     }
 
+    /**
+     * creates the picker frame
+     * @return dialog
+     */
     public JDialog createFrame(){
         JDialog frame = new JDialog();
         frame.setUndecorated(true);

@@ -1,6 +1,7 @@
 package ch.virt.winutils.gui.components.module;
 
 import ch.virt.winutils.event.Listener;
+import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 import ch.virt.winutils.gui.helper.GroupFactory;
 
@@ -8,10 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * This class creates the ui for a module
  * @author VirtCode
  * @version 1.0
  */
-public class ModuleSetting {
+public class ModuleSettingsDisplay {
     private final int id;
 
     private JButton triggerButton;
@@ -25,9 +27,21 @@ public class ModuleSetting {
 
     private JPanel parent;
 
-    public ModuleSetting(int id, String title, String icon, JPanel specific, Listener<Integer> moduleCalled){
+    private final MainEventBus mainEventBus;
+
+    /**
+     * Creates a ModuleSettingsDisplay
+     * @param id id of that module
+     * @param title title of that module
+     * @param icon path to icon of that module
+     * @param specific specific gui part of that module
+     * @param mainEventBus main event bus
+     * @param moduleCalled listener when the module gui should be displayed
+     */
+    public ModuleSettingsDisplay(int id, String title, String icon, JPanel specific, MainEventBus mainEventBus, Listener<Integer> moduleCalled){
         this.id = id;
         this.specific = specific;
+        this.mainEventBus = mainEventBus;
 
         this.triggerButton = ComponentFactory.createImageButton(icon);
         triggerButton.addActionListener(e -> moduleCalled.called(id));
@@ -35,14 +49,17 @@ public class ModuleSetting {
         create(title);
         assign();
         listen();
-
     }
 
+    /**
+     * Creates the necessary components
+     * @param title title of the module
+     */
     private void create(String title){
-        this.parent = ComponentFactory.createGroup();
+        this.parent = GroupFactory.createSettingSubCategory();
         parent.setLayout(new BoxLayout(parent, BoxLayout.Y_AXIS));
 
-        this.title = ComponentFactory.createHeader();
+        this.title = ComponentFactory.createLabelHeader();
         this.title.setText(title);
 
         this.settings = GroupFactory.createSettingSubCategory();
@@ -50,9 +67,12 @@ public class ModuleSetting {
         this.launch = ComponentFactory.createButton();
         launch.setText("Launch");
 
-        this.changeBind = GroupFactory.createChangeKeyBindModule(new int[]{0}, "Keybind", arg -> {}, true);
+        this.changeBind = GroupFactory.createChangeKeyBindModule(new int[]{mainEventBus.getModuleSettings(id).getKeyBinds()}, "Keybind", arg -> mainEventBus.chooseModuleBind(id), true);
     }
 
+    /**
+     * Assigns the necessary components
+     */
     private void assign(){
         parent.add(title);
         parent.add(settings);
@@ -65,18 +85,33 @@ public class ModuleSetting {
         settings.add(specific);
     }
 
+    /**
+     * Assigns listener to the components
+     */
     private void listen(){
-        this.launch.addActionListener(e -> System.out.println("Module Launched: " + id));
+        launch.addActionListener(e -> mainEventBus.modulePressed(id));
     }
 
+    /**
+     * Returns the id of the display
+     * @return id
+     */
     public int getId(){
         return id;
     }
 
+    /**
+     * Returns the module activation button
+     * @return button
+     */
     public JButton getTriggerButton(){
         return triggerButton;
     }
 
+    /**
+     * Returns the gui that should then be displayed
+     * @return
+     */
     public JPanel getGui(){
         return parent;
     }

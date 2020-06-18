@@ -8,11 +8,18 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
+ * Used to load / change resources
  * @author VirtCode
  * @version 1.0
  */
 public class ResourceHelper {
 
+    /**
+     * Colorizes an Image according to its alpha values
+     * @param image image
+     * @param color color to colorize with
+     * @return image
+     */
     public static Image colorizeImage(Image image, Color color){
         BufferedImage converted = toBufferedImage(image);
         BufferedImage result = new BufferedImage(converted.getWidth(), converted.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -26,6 +33,11 @@ public class ResourceHelper {
         return result;
     }
 
+    /**
+     * Converts an image to a buffered image
+     * @param image image to convert
+     * @return buffered image
+     */
     public static BufferedImage toBufferedImage(Image image){
         if (image instanceof BufferedImage) {
             return (BufferedImage) image;
@@ -40,6 +52,11 @@ public class ResourceHelper {
         return bimage;
     }
 
+    /**
+     * Loads a image from the classpath
+     * @param path path to load from
+     * @return image
+     */
     public static Image loadImage(String path) {
         try {
             return ImageIO.read(Main.class.getResourceAsStream(path));
