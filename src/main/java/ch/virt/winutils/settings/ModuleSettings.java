@@ -4,6 +4,7 @@ import ch.virt.winutils.modules.Module;
 import com.google.gson.annotations.Expose;
 
 /**
+ * This class is a settings instance for a single module
  * @author VirtCode
  * @version 1.0
  */
@@ -15,6 +16,10 @@ public class ModuleSettings {
     @Expose
     private int keyBinds;
 
+    /**
+     * Creates a settings module for a module
+     * @param module module to create for
+     */
     public ModuleSettings(Module module){
         this.settings = module.toSettings();
         this.id = module.getId();

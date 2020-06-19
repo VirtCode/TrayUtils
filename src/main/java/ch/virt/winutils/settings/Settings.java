@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * This class saves and loads the settings
  * @author VirtCode
  * @version 1.0
  */

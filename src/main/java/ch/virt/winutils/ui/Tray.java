@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
+ * Manages the icon in the system tray
  * @author VirtCode
  * @version 1.0
  */
@@ -20,6 +21,12 @@ public class Tray {
     private TrayIcon icon;
     private MainEventBus bus;
 
+    /**
+     * Creates the system tray
+     * @param eventBus main event bus
+     * @param moduleSettings **REMOVE**
+     * @param baseBind **REMOVE**
+     */
     public Tray(MainEventBus eventBus, Module[] moduleSettings, int[] baseBind) {
         this.bus = eventBus;
 
@@ -67,6 +74,11 @@ public class Tray {
         }
     }
 
+    /**
+     * Refreshes the popup menu of the tray
+     * @param moduleSettings **REMOVE**
+     * @param baseBinds **REMOVE**
+     */
     public void refreshPopupMenu(Module[] moduleSettings, int[] baseBinds) {
         this.icon.setPopupMenu(getMenu(moduleSettings, baseBinds));
     }
@@ -80,6 +92,12 @@ public class Tray {
         return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
     }
 
+    /**
+     * returns the popup menu of the tray
+     * @param moduleSettings **REMOVE**
+     * @param baseBinds **REMOVE**
+     * @return the created popup menu
+     */
     private PopupMenu getMenu(Module[] moduleSettings, int[] baseBinds) {
         PopupMenu menu = new PopupMenu("WinUtils");
         menu.add(new MenuItem("WinUtils"));

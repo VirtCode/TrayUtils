@@ -10,6 +10,8 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 /**
+ * This class manages the key choosing gui
+ * (Should be initialized to function)
  * @author VirtCode
  * @version 1.0
  */
@@ -21,6 +23,10 @@ public class KeyChooser {
     private static boolean canceled;
     private static boolean chooseOne;
 
+    /**
+     * Creates a key chooser
+     * @param bus input bus for the inputs
+     */
     public KeyChooser(InputBus bus) {
         currentlyPressed = new ArrayList<>();
         bus.addKeyPressedListener(c -> {
@@ -43,6 +49,10 @@ public class KeyChooser {
         });
     }
 
+    /**
+     * Creates the choosing frame
+     * @return created dialog
+     */
     public static JDialog createFrame(){
         JDialog frame = new JDialog();
         frame.setUndecorated(true);
@@ -70,6 +80,10 @@ public class KeyChooser {
         return frame;
     }
 
+    /**
+     * Chooses a key combination
+     * @param chosenKeycodes listener called when keycodes are chosen
+     */
     public static void choose(Listener<Integer[]> chosenKeycodes){
         if (running) return;
         chooseOne = false;
@@ -101,6 +115,10 @@ public class KeyChooser {
         thread.start();
     }
 
+    /**
+     * Chooses one key
+     * @param chosenKeycodes listener called when chosen
+     */
     public static void chooseOne(Listener<Integer> chosenKeycodes){
         if (running) return;
         chooseOne = true;
@@ -132,10 +150,19 @@ public class KeyChooser {
         thread.start();
     }
 
+    /**
+     * Return the String for the chosen keys
+     * @return chosen string
+     */
     private static String keyString(){
         return prettifyKeyArray(currentlyPressed.toArray(new Integer[0]));
     }
 
+    /**
+     * Turns a integer array into an array of keys
+     * @param binds binds to convert
+     * @return converted string
+     */
     public static String prettifyKeyArray(Integer[] binds){
         if (binds.length == 0) return "";
         StringBuilder sb = new StringBuilder();

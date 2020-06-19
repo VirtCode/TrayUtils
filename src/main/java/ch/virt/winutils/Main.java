@@ -14,10 +14,15 @@ import ch.virt.winutils.settings.Settings;
 import ch.virt.winutils.ui.Tray;
 
 /**
+ * This is the main class
  * @author VirtCode
  * @version 1.0
  */
 public class Main {
+    /**
+     * This is just another main method - JAMM
+     * @param args args of that method
+     */
     public static void main(String[] args) {
         new Main();
     }
@@ -34,6 +39,9 @@ public class Main {
 
     private final GuiWrapper gui;
 
+    /**
+     * Creates the MainObject
+     */
     public Main(){
         Dialogs.initialize();
 
@@ -54,17 +62,27 @@ public class Main {
         events.saveSettings();
     }
 
+    /**
+     * Registers the module into the system
+     */
     private void registerModules(){
         modules.registerModule(new ColorPickerModule());
         applyModuleSettings();
     }
 
+    /**
+     * Applies all the settings to the modules
+     */
     private void applyModuleSettings(){
         for (ModuleSettings module : settings.getModules()) {
             modules.applySettings(module);
         }
     }
 
+    /**
+     * Creates the main event bus
+     * @return created bus
+     */
     private MainEventBus createEventBus(){
         return new MainEventBus() {
             @Override
