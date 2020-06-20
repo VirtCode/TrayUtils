@@ -55,7 +55,7 @@ public class Main {
         listener = new InputListener(settings, events, inputs);
         keyChooser = new KeyChooser(inputs);
 
-        tray = new Tray(events, modules.getModules(), settings.getBaseKeyCodes());
+        tray = new Tray(events);
 
         gui = new GuiWrapper(events, settings, modules);
 
@@ -91,7 +91,6 @@ public class Main {
                     if (settings.getModuleSettings(module.getId()) != null) settings.setModuleSettings(modules.getNewSpecificSettings(settings.getModuleSettings(module.getId())));
                     else settings.setModuleSettings(new ModuleSettings(module));
                 }
-                tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
                 settings.save();
             }
 
@@ -107,7 +106,6 @@ public class Main {
                     for (int i = 0; i < ints.length; i++) ints[i] = arg[i];
                     settings.setBaseKeyCodes(ints);
                     settings.save();
-                    tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
                     listener.refreshBaseKeyCodes(settings.getBaseKeyCodes());
                 });
             }
@@ -120,7 +118,6 @@ public class Main {
                     settings.setModuleSettings(ms);
                     settings.save();
                     applyModuleSettings();
-                    tray.refreshPopupMenu(modules.getModules(), settings.getBaseKeyCodes());
                     listener.refreshModuleBinds(settings.getKeyModuleMap());
                 });
             }

@@ -1,6 +1,7 @@
 package ch.virt.winutils.gui;
 
 import ch.virt.winutils.event.GuiEventBus;
+import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.gui.components.ModuleGui;
 import ch.virt.winutils.gui.components.SettingsGui;
@@ -11,6 +12,10 @@ import ch.virt.winutils.settings.Settings;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 
 /**
  * This is the main gui instance
@@ -27,11 +32,13 @@ public class Gui {
     private ModuleGui modules;
     private SettingsGui settings;
 
-    private MainEventBus mainEvents;
-    private GuiEventBus guiEvents;
+    private final MainEventBus mainEvents;
+    private final GuiEventBus guiEvents;
 
-    private Settings settingsInstance;
-    private ModuleLoader modulesInstance;
+    private final Settings settingsInstance;
+    private final ModuleLoader modulesInstance;
+
+    private final Listener<Object> focusLost;
 
     /**
      * Creates the main instance
@@ -39,8 +46,9 @@ public class Gui {
      * @param settings settings to manipulate
      * @param modules modules to use
      */
-    public Gui(MainEventBus eventBus, Settings settings, ModuleLoader modules){
+    public Gui(MainEventBus eventBus, Settings settings, ModuleLoader modules, Listener<Object> focusLost){
         this.mainEvents = eventBus;
+        this.focusLost = focusLost;
         this.guiEvents = createGuiEvents();
 
         settingsInstance = settings;
@@ -71,6 +79,18 @@ public class Gui {
         frame.setLocation(x, y);
 
         frame.setLayout(new BorderLayout());
+
+        frame.addWindowFocusListener(new WindowFocusListener() {
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+                focusLost.called(null);
+            }
+        });
     }
 
     /**

@@ -21,6 +21,8 @@ public class Settings {
     private ArrayList<ModuleSettings> modules;
     @Expose
     private int[] baseKeyCodes = {3675, 42};
+    @Expose
+    private int guiKeyCode = 52;
 
     /**
      * Creates empty settings
@@ -117,5 +119,21 @@ public class Settings {
             map.put(module.getKeyBinds(), module.getId());
         }
         return map;
+    }
+
+    /**
+     * Returns the key code for the gui to be triggered
+     * @return key code for the gui to be triggered
+     */
+    public int getGuiKeyCode() {
+        return guiKeyCode;
+    }
+
+    /**
+     * Sets the gui keycode
+     * @param guiKeyCode new keycode
+     */
+    public void setGuiKeyCode(int guiKeyCode) {
+        this.guiKeyCode = guiKeyCode;
     }
 }

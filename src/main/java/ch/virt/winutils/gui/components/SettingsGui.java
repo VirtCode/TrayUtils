@@ -72,7 +72,7 @@ public class SettingsGui {
 
         changeBaseKeyBind = GroupFactory.createChangeKeyBindModule(settings.getBaseKeyCodes(), "Base Keybind", arg -> {settings.setBaseKeyCodes(Utils.toPrimitive(arg)); settings.save();}, false);
 
-        changeGuiKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{44}, "Gui Keybind", arg -> {}, true);
+        changeGuiKeyBind = GroupFactory.createChangeKeyBindModule(new int[]{settings.getGuiKeyCode()}, "Gui Keybind", arg -> {settings.setGuiKeyCode(arg[0]); settings.save();}, true);
 
         advancedSubTitle = ComponentFactory.createLabelSubHeader();
         advancedSubTitle.setText("Advanced");

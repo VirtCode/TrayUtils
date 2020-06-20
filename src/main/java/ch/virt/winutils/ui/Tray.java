@@ -5,6 +5,7 @@ import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.modules.Module;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -24,16 +25,15 @@ public class Tray {
     /**
      * Creates the system tray
      * @param eventBus main event bus
-     * @param moduleSettings **REMOVE**
-     * @param baseBind **REMOVE**
+
      */
-    public Tray(MainEventBus eventBus, Module[] moduleSettings, int[] baseBind) {
+    public Tray(MainEventBus eventBus) {
         this.bus = eventBus;
 
         if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
 
-            this.icon = new TrayIcon(getImage(), "WinUtils", getMenu(moduleSettings, baseBind));
+            this.icon = new TrayIcon(getImage(), "WinUtils", getMenu());
             this.icon.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -74,15 +74,6 @@ public class Tray {
         }
     }
 
-    /**
-     * Refreshes the popup menu of the tray
-     * @param moduleSettings **REMOVE**
-     * @param baseBinds **REMOVE**
-     */
-    public void refreshPopupMenu(Module[] moduleSettings, int[] baseBinds) {
-        this.icon.setPopupMenu(getMenu(moduleSettings, baseBinds));
-    }
-
     private Image getImage() {
         try {
             return ImageIO.read(Tray.class.getResourceAsStream("/logo.png"));
@@ -94,21 +85,23 @@ public class Tray {
 
     /**
      * returns the popup menu of the tray
-     * @param moduleSettings **REMOVE**
-     * @param baseBinds **REMOVE**
      * @return the created popup menu
      */
-    private PopupMenu getMenu(Module[] moduleSettings, int[] baseBinds) {
+    private PopupMenu getMenu() {
         PopupMenu menu = new PopupMenu("WinUtils");
         menu.add(new MenuItem("WinUtils"));
-        Integer[] integers = new Integer[baseBinds.length];
-        for (int i = 0; i < integers.length; i++) integers[i] = baseBinds[i];
-        menu.add(KeyChooser.prettifyKeyArray(integers) + " + [Module]");
+
         menu.addSeparator();
+
+        MenuItem showGui = new MenuItem("Show Gui");
+        showGui.addActionListener(e -> bus.showGui());
+        menu.add(showGui);
 
         MenuItem about = new MenuItem("About");
         about.addActionListener(e -> Dialogs.showAbout());
         menu.add(about);
+
+        menu.addSeparator();
 
         MenuItem exit = new MenuItem("Exit");
         exit.addActionListener(e -> bus.quit());

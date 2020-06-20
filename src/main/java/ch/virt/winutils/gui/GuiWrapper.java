@@ -1,5 +1,6 @@
 package ch.virt.winutils.gui;
 
+import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 import ch.virt.winutils.modules.ModuleLoader;
@@ -15,12 +16,10 @@ public class GuiWrapper {
     private Thread thread;
     private Gui gui;
     private boolean alive;
-    private boolean first;
+    private final MainEventBus mainEvents;
 
-    private MainEventBus mainEvents;
-
-    private Settings settingsInstance;
-    private ModuleLoader modulesInstance;
+    private final Settings settingsInstance;
+    private final ModuleLoader modulesInstance;
 
     /**
      * Creates the gui wrapper
@@ -29,7 +28,6 @@ public class GuiWrapper {
      * @param modulesInstance module instance
      */
     public GuiWrapper(MainEventBus mainEvents, Settings settingsInstance, ModuleLoader modulesInstance) {
-        first = true;
         this.mainEvents = mainEvents;
         this.settingsInstance = settingsInstance;
         this.modulesInstance = modulesInstance;
@@ -41,7 +39,7 @@ public class GuiWrapper {
     public void create(){
         if (alive) return;
 
-        thread = new Thread(() -> gui = new Gui(mainEvents, settingsInstance, modulesInstance));
+        thread = new Thread(() -> gui = new Gui(mainEvents, settingsInstance, modulesInstance, arg -> destroy()));
         thread.start();
 
         alive = true;
