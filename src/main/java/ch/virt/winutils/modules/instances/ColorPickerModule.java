@@ -37,7 +37,7 @@ public class ColorPickerModule extends Module {
      * Creates a color picker module
      */
     public ColorPickerModule() {
-        super(9846, "Colorpicker", 46, "/color_picker.png");
+        super(9846, "Colorpicker", 46, "/color_picker.png", "This Module is basically a system wide color picker. If it is activated using its keypress, a little window will pop up and show which color is being hovered over by the mouse. You can then click or press enter to copy the hex value of that color into your clipboard.");
     }
 
     @Override
@@ -219,22 +219,20 @@ public class ColorPickerModule extends Module {
     }
 
     @Override
-    public void fromSettings(String s) {
-        JsonObject object = new Gson().fromJson(s, JsonObject.class);
-
+    public void fromSettings(JsonObject object) {
         frameX = object.get("frame_x").getAsInt();
         frameY = object.get("frame_y").getAsInt();
         showInstructions = object.get("instructions").getAsBoolean();
     }
     @Override
-    public String toSettings() {
+    public JsonObject toSettings() {
         JsonObject object = new JsonObject();
 
         object.addProperty("instructions", showInstructions);
         object.addProperty("frame_x", frameX);
         object.addProperty("frame_y", frameY);
 
-        return new Gson().toJson(object);
+        return object;
     }
 
     @Override

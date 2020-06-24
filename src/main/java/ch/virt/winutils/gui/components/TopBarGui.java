@@ -107,7 +107,7 @@ public class TopBarGui {
         menuButton.addActionListener(e -> mainMenu.show(menuButton, menuButton.getWidth() - mainMenu.getWidth(), menuButton.getHeight()));
 
         exit.addActionListener(e -> mainEvents.quit());
-        hide.addActionListener(e -> mainEvents.hideGui());
+        hide.addActionListener(e -> mainEvents.toggleGui());
         about.addActionListener(e -> Dialogs.showAbout());
         website.addActionListener(e -> {
             try {

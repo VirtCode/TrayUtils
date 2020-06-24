@@ -55,12 +55,7 @@ public class ModuleGui {
         moduleMap = new HashMap<>();
 
         for (Module module : modules.getModules()) {
-            int id = module.getId();
-            String title = module.getName();
-            String icon = module.getIconPath();
-            JPanel panel = module.settingsMenu();
-
-            addModule(new ModuleSettingsDisplay(id, title, icon, panel, bus, this::setModule));
+            addModule(new ModuleSettingsDisplay(module, bus, this::setModule));
         }
     }
 

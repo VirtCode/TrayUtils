@@ -3,13 +3,10 @@ package ch.virt.winutils;
 import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.event.InputBus;
 import ch.virt.winutils.event.InputListener;
-import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.gui.GuiWrapper;
-import ch.virt.winutils.modules.Module;
 import ch.virt.winutils.modules.instances.ColorPickerModule;
 import ch.virt.winutils.modules.ModuleLoader;
 import ch.virt.winutils.ui.KeyChooser;
-import ch.virt.winutils.settings.ModuleSettings;
 import ch.virt.winutils.settings.Settings;
 import ch.virt.winutils.ui.Tray;
 
@@ -35,8 +32,6 @@ public class Main {
     private final InputListener listener;
              
     private final Tray tray;
-    private final KeyChooser keyChooser;
-
     private final GuiWrapper gui;
 
     /**
@@ -49,11 +44,14 @@ public class Main {
         inputs = new InputBus();
 
         settings = Settings.load();
+
         modules = new ModuleLoader(events, inputs);
         registerModules();
 
-        listener = new InputListener(settings, events, inputs);
-        keyChooser = new KeyChooser(inputs);
+        applyModuleSettings();
+
+        listener = new InputListener(settings, events, inputs, modules.getKeyModuleMap());
+        KeyChooser.init(inputs);
 
         tray = new Tray(events);
 
@@ -67,16 +65,25 @@ public class Main {
      */
     private void registerModules(){
         modules.registerModule(new ColorPickerModule());
-        applyModuleSettings();
     }
 
     /**
      * Applies all the settings to the modules
      */
     private void applyModuleSettings(){
-        for (ModuleSettings module : settings.getModules()) {
-            modules.applySettings(module);
-        }
+        modules.distributeSettings(settings.getModules());
+
+    }
+
+    /**
+     * Renews the settings
+     */
+    private void renewSettings(){
+        settings.setModules(modules.fetchSettings());
+        settings.save();
+
+        listener.refreshModuleBinds(settings);
+        listener.refreshModuleBinds(modules.getKeyModuleMap());
     }
 
     /**
@@ -87,44 +94,12 @@ public class Main {
         return new MainEventBus() {
             @Override
             public void saveSettings() {
-                for (Module module: modules.getModules()){
-                    if (settings.getModuleSettings(module.getId()) != null) settings.setModuleSettings(modules.getNewSpecificSettings(settings.getModuleSettings(module.getId())));
-                    else settings.setModuleSettings(new ModuleSettings(module));
-                }
-                settings.save();
+                renewSettings();
             }
 
             @Override
             public void modulePressed(int id) {
                 modules.keyEventForModule(id);
-            }
-
-            @Override
-            public void chooseBaseBind() {
-                keyChooser.choose(arg -> {
-                    int[] ints = new int[arg.length];
-                    for (int i = 0; i < ints.length; i++) ints[i] = arg[i];
-                    settings.setBaseKeyCodes(ints);
-                    settings.save();
-                    listener.refreshBaseKeyCodes(settings.getBaseKeyCodes());
-                });
-            }
-
-            @Override
-            public void chooseModuleBind(int id) {
-                keyChooser.chooseOne(arg -> {
-                    ModuleSettings ms = settings.getModuleSettings(id);
-                    ms.setKeyBinds(arg);
-                    settings.setModuleSettings(ms);
-                    settings.save();
-                    applyModuleSettings();
-                    listener.refreshModuleBinds(settings.getKeyModuleMap());
-                });
-            }
-
-            @Override
-            public ModuleSettings getModuleSettings(int id) {
-                return settings.getModuleSettings(id);
             }
 
             @Override
@@ -134,12 +109,7 @@ public class Main {
             }
 
             @Override
-            public void hideGui() {
-                Dialogs.showError("Hiding not implemented yet!");
-            }
-
-            @Override
-            public void showGui() {
+            public void toggleGui() {
                 gui.toggle();
             }
         };

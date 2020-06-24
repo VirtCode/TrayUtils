@@ -27,7 +27,7 @@ public class KeyChooser {
      * Creates a key chooser
      * @param bus input bus for the inputs
      */
-    public KeyChooser(InputBus bus) {
+    public static void init(InputBus bus) {
         currentlyPressed = new ArrayList<>();
         bus.addKeyPressedListener(c -> {
             if (running){

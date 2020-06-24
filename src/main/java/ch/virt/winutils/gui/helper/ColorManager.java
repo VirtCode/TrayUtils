@@ -22,6 +22,7 @@ public class ColorManager {
     public static Color topBackground = new Color(0x242424);
     public static Color sideBackground = new Color(0x2A2A2A);
     public static Color mainBackground = new Color(0x313131);
+    public static Color mainSeparator = new Color(0x424242);
 
     public static Color menuSeparator = new Color(0x5F5F5F);
     public static Color menuBackgroundIdle = new Color(0x404040);

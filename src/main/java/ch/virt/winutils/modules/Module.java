@@ -2,6 +2,7 @@ package ch.virt.winutils.modules;
 
 import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.event.InputBus;
+import com.google.gson.JsonObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,10 +16,13 @@ public abstract class Module {
     protected MainEventBus eventBus;
     protected InputBus inputBus;
 
-    protected int id;
-    protected String name;
-    protected int keyBind;
+    protected final int id;
+    protected final String name;
+    protected final String description;
     protected String icon;
+
+    protected int keyBind;
+    protected boolean enabled;
 
     /**
      * Used to apply the event busses to the module
@@ -37,11 +41,13 @@ public abstract class Module {
      * @param keyBind default keybind used to trigger the module
      * @param icon path to the main icon of that module
      */
-    public Module(int id, String name, int keyBind, String icon){
+    public Module(int id, String name, int defaultKeyBind, String icon, String description){
         this.id = id;
         this.name = name;
-        this.keyBind = keyBind;
+        this.keyBind = defaultKeyBind;
         this.icon = icon;
+        this.description = description;
+        this.enabled = true;
     }
 
     /**
@@ -85,6 +91,22 @@ public abstract class Module {
     }
 
     /**
+     * Returns whether the module is enabled
+     * @return is enabled
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets whether the module is enabled
+     * @param enabled
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
      * Creates the module
      * (is called when the busses have been initialized)
      */
@@ -105,11 +127,19 @@ public abstract class Module {
      * Should load the settings in
      * @param s String settings
      */
-    public abstract void fromSettings(String s);
+    public abstract void fromSettings(JsonObject s);
 
     /**
      * Should convert settings to a String to save
      * @return String settings
      */
-    public abstract String toSettings();
+    public abstract JsonObject toSettings();
+
+    /**
+     * Returns the description of the module
+     * @return String description
+     */
+    public String getDescription() {
+        return description;
+    }
 }

@@ -52,20 +52,24 @@ public class ModuleLoader {
      * applies the new module settings to a module
      * @param settings settings to apply
      */
-    public void applySettings(ModuleSettings settings){
-        if(modules.get(settings.getId()) != null){
-            modules.get(settings.getId()).fromSettings(settings.getSettings());
-            modules.get(settings.getId()).assignKeyBind(settings.getKeyBinds());
+    public void distributeSettings(ModuleSettings[] settings){
+        for (ModuleSettings setting : settings) {
+            if(modules.get(setting.getId()) != null){
+                setting.apply(modules.get(setting.getId()));
+            }
         }
     }
 
     /**
-     * Gets new settings for a module
-     * @param settings old settings
-     * @return new settings
+     * Fetches all settings of present modules
+     * @return fetched settings
      */
-    public ModuleSettings getNewSpecificSettings(ModuleSettings settings){
-        if(modules.get(settings.getId()) != null) settings.setSettings(modules.get(settings.getId()).toSettings());
+    public ModuleSettings[] fetchSettings(){
+        ModuleSettings[] settings = new ModuleSettings[modules.size()];
+        Module[] modules = this.modules.values().toArray(new Module[0]);
+        for (int i = 0; i < modules.length; i++) {
+            settings[i] = new ModuleSettings(modules[i]);
+        }
         return settings;
     }
 
@@ -75,5 +79,17 @@ public class ModuleLoader {
      */
     public Module[] getModules(){
         return modules.values().toArray(new Module[0]);
+    }
+
+    /**
+     * Returns a keybind to module hashMap
+     * @return map
+     */
+    public HashMap<Integer, Integer> getKeyModuleMap(){
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (Module module : modules.values()) {
+            map.put(module.getKeyBind(), module.getId());
+        }
+        return map;
     }
 }

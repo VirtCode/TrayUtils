@@ -1,6 +1,7 @@
 package ch.virt.winutils.settings;
 
 import ch.virt.winutils.modules.Module;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -10,36 +11,41 @@ import com.google.gson.annotations.Expose;
  */
 public class ModuleSettings {
     @Expose
-    private String settings;
-    @Expose
     private int id;
     @Expose
+    private boolean enabled;
+    @Expose
     private int keyBinds;
+    @Expose
+    private JsonObject settings;
 
     /**
      * Creates a settings module for a module
      * @param module module to create for
      */
     public ModuleSettings(Module module){
+        fetch(module);
+    }
+
+    /**
+     * Fetches the information out of the module and puts into the variables
+     * @param module module
+     */
+    public void fetch(Module module){
         this.settings = module.toSettings();
         this.id = module.getId();
         this.keyBinds = module.getKeyBind();
+        this.enabled = module.isEnabled();
     }
 
     /**
-     * Returns the settings of that module
-     * @return settings of that module
+     * Applies the settings to the given module
+     * @param module module to apply to
      */
-    public String getSettings() {
-        return settings;
-    }
-
-    /**
-     * sets the settings of that module
-     * @param settings settings
-     */
-    public void setSettings(String settings) {
-        this.settings = settings;
+    public void apply(Module module){
+        module.fromSettings(settings);
+        module.assignKeyBind(keyBinds);
+        module.setEnabled(enabled);
     }
 
     /**
@@ -48,21 +54,5 @@ public class ModuleSettings {
      */
     public int getId() {
         return id;
-    }
-
-    /**
-     * Returns the additional key to be pressed for that module
-     * @return additional key to be pressed for that module
-     */
-    public int getKeyBinds() {
-        return keyBinds;
-    }
-
-    /**
-     * Sets the keybind of the module
-     * @param keyBinds keybinds to set
-     */
-    public void setKeyBinds(int keyBinds) {
-        this.keyBinds = keyBinds;
     }
 }

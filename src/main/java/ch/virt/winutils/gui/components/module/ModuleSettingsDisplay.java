@@ -4,8 +4,10 @@ import ch.virt.winutils.event.Listener;
 import ch.virt.winutils.event.MainEventBus;
 import ch.virt.winutils.gui.helper.ComponentFactory;
 import ch.virt.winutils.gui.helper.GroupFactory;
+import ch.virt.winutils.modules.Module;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
@@ -14,16 +16,19 @@ import java.awt.*;
  * @version 1.0
  */
 public class ModuleSettingsDisplay {
-    private final int id;
+    private final Module module;
 
     private JButton triggerButton;
 
     private JLabel title;
+    private JLabel description;
     private JButton launch;
     private JPanel changeBind;
 
     private JPanel settings;
-    private JPanel specific;
+    private JSeparator separatorOne;
+    private JSeparator separatorTwo;
+
 
     private JPanel parent;
 
@@ -31,43 +36,46 @@ public class ModuleSettingsDisplay {
 
     /**
      * Creates a ModuleSettingsDisplay
-     * @param id id of that module
-     * @param title title of that module
-     * @param icon path to icon of that module
-     * @param specific specific gui part of that module
+     * @param module module to create settings from
      * @param mainEventBus main event bus
      * @param moduleCalled listener when the module gui should be displayed
      */
-    public ModuleSettingsDisplay(int id, String title, String icon, JPanel specific, MainEventBus mainEventBus, Listener<Integer> moduleCalled){
-        this.id = id;
-        this.specific = specific;
+    public ModuleSettingsDisplay(Module module, MainEventBus mainEventBus, Listener<Integer> moduleCalled){
+        this.module = module;
         this.mainEventBus = mainEventBus;
 
-        this.triggerButton = ComponentFactory.createImageButton(icon);
-        triggerButton.addActionListener(e -> moduleCalled.called(id));
+        this.triggerButton = ComponentFactory.createImageButton(module.getIconPath());
+        triggerButton.addActionListener(e -> moduleCalled.called(module.getId()));
 
-        create(title);
+        create();
         assign();
         listen();
     }
 
     /**
      * Creates the necessary components
-     * @param title title of the module
      */
-    private void create(String title){
+    private void create(){
         this.parent = GroupFactory.createSettingSubCategory();
         parent.setLayout(new BoxLayout(parent, BoxLayout.Y_AXIS));
 
         this.title = ComponentFactory.createLabelHeader();
-        this.title.setText(title);
+        this.title.setText(module.getName());
+
+        this.description = ComponentFactory.createLabel();
+        this.description.setText("<html>" + module.getDescription() + "<html>");
 
         this.settings = GroupFactory.createSettingSubCategory();
+
+        this.separatorOne = ComponentFactory.createMenuSeparator();
+        separatorOne.setMaximumSize(new Dimension(10000, 10));
+        this.separatorTwo = ComponentFactory.createMenuSeparator();
+        separatorTwo.setMaximumSize(new Dimension(10000, 10));
 
         this.launch = ComponentFactory.createButton();
         launch.setText("Launch");
 
-        this.changeBind = GroupFactory.createChangeKeyBindModule(new int[]{mainEventBus.getModuleSettings(id).getKeyBinds()}, "Keybind", arg -> mainEventBus.chooseModuleBind(id), true);
+        this.changeBind = GroupFactory.createChangeKeyBindModule(new int[]{module.getKeyBind()}, "Keybind", arg -> {module.assignKeyBind(arg[0]); mainEventBus.saveSettings();}, true);
     }
 
     /**
@@ -77,19 +85,23 @@ public class ModuleSettingsDisplay {
         parent.add(title);
         parent.add(settings);
 
+        settings.add(description);
+        settings.add(Box.createRigidArea(new Dimension(0, 8)));
+        settings.add(separatorOne);
         settings.add(launch);
         settings.add(Box.createRigidArea(new Dimension(0, 8)));
         settings.add(changeBind);
-        settings.add(Box.createRigidArea(new Dimension(0, 8)));
+        settings.add(Box.createRigidArea(new Dimension(0, 2)));
+        settings.add(separatorTwo);
 
-        settings.add(specific);
+        settings.add(module.settingsMenu());
     }
 
     /**
      * Assigns listener to the components
      */
     private void listen(){
-        launch.addActionListener(e -> mainEventBus.modulePressed(id));
+        launch.addActionListener(e -> mainEventBus.modulePressed(module.getId()));
     }
 
     /**
@@ -97,7 +109,7 @@ public class ModuleSettingsDisplay {
      * @return id
      */
     public int getId(){
-        return id;
+        return module.getId();
     }
 
     /**

@@ -6,6 +6,7 @@ import com.google.gson.annotations.Expose;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -23,6 +24,8 @@ public class Settings {
     private int[] baseKeyCodes = {3675, 42};
     @Expose
     private int guiKeyCode = 52;
+    @Expose
+    private boolean consumeKeys = true;
 
     /**
      * Creates empty settings
@@ -84,6 +87,10 @@ public class Settings {
         return modules.toArray(new ModuleSettings[0]);
     }
 
+    public void setModules(ModuleSettings[] settings){
+        modules = new ArrayList<>(Arrays.asList(settings));
+    }
+
     /**
      * Replaces or adds the settings for a module
      * @param settings settings to add
@@ -110,18 +117,6 @@ public class Settings {
     }
 
     /**
-     * Returns a keybind to module hashMap
-     * @return map
-     */
-    public HashMap<Integer, Integer> getKeyModuleMap(){
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for (ModuleSettings module : modules) {
-            map.put(module.getKeyBinds(), module.getId());
-        }
-        return map;
-    }
-
-    /**
      * Returns the key code for the gui to be triggered
      * @return key code for the gui to be triggered
      */
@@ -135,5 +130,21 @@ public class Settings {
      */
     public void setGuiKeyCode(int guiKeyCode) {
         this.guiKeyCode = guiKeyCode;
+    }
+
+    /**
+     * Return whether the system should consume key events
+     * @return should consume key events
+     */
+    public boolean isConsumeKeys() {
+        return consumeKeys;
+    }
+
+    /**
+     * Set whether the system should consume key events
+     * @param consumeKeys should consume key events
+     */
+    public void setConsumeKeys(boolean consumeKeys) {
+        this.consumeKeys = consumeKeys;
     }
 }

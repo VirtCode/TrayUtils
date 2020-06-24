@@ -8,6 +8,8 @@ import ch.virt.winutils.settings.Settings;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * This class is the settings gui part of the ui
@@ -29,6 +31,8 @@ public class SettingsGui {
 
     private JLabel advancedSubTitle;
     private JPanel advancedSettings;
+
+    private JCheckBox consumeKeys;
 
     private JCheckBox startWithOS;
 
@@ -80,6 +84,9 @@ public class SettingsGui {
         startWithOS = ComponentFactory.createCheckBox();
         startWithOS.setText("Start with OS");
 
+        consumeKeys = ComponentFactory.createCheckBox();
+        consumeKeys.setText("Consume Caught Key Events");
+        consumeKeys.setSelected(settings.isConsumeKeys());
     }
 
     /**
@@ -99,12 +106,17 @@ public class SettingsGui {
         settingsPanel.add(advancedSettings);
 
         advancedSettings.add(startWithOS);
+        advancedSettings.add(consumeKeys);
     }
 
     /**
      * Assigns listeners to the components
      */
     private void listen(){
+        consumeKeys.addChangeListener(e -> {
+            settings.setConsumeKeys(consumeKeys.isSelected());
+            settings.save();
+        });
     }
 
     /**

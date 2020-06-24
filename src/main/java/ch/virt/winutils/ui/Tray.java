@@ -37,7 +37,7 @@ public class Tray {
             this.icon.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) bus.showGui();
+                    if (e.getButton() == MouseEvent.BUTTON1) bus.toggleGui();
                 }
 
                 @Override
@@ -94,7 +94,7 @@ public class Tray {
         menu.addSeparator();
 
         MenuItem showGui = new MenuItem("Show Gui");
-        showGui.addActionListener(e -> bus.showGui());
+        showGui.addActionListener(e -> bus.toggleGui());
         menu.add(showGui);
 
         MenuItem about = new MenuItem("About");
