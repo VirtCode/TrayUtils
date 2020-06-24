@@ -26,6 +26,8 @@ public class Settings {
     private int guiKeyCode = 52;
     @Expose
     private boolean consumeKeys = true;
+    @Expose
+    private boolean startWithSystem = true;
 
     /**
      * Creates empty settings
@@ -146,5 +148,21 @@ public class Settings {
      */
     public void setConsumeKeys(boolean consumeKeys) {
         this.consumeKeys = consumeKeys;
+    }
+
+    /**
+     * Returns whether the program should start with the operating system
+     * @return whether the program should start with the os
+     */
+    public boolean isStartWithSystem() {
+        return startWithSystem;
+    }
+
+    /**
+     * Sets whether the program should start with the system
+     * @param startWithSystem start with system
+     */
+    public void setStartWithSystem(boolean startWithSystem) {
+        this.startWithSystem = startWithSystem;
     }
 }

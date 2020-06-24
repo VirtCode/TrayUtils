@@ -10,6 +10,8 @@ import ch.virt.winutils.ui.KeyChooser;
 import ch.virt.winutils.settings.Settings;
 import ch.virt.winutils.ui.Tray;
 
+import java.util.Arrays;
+
 /**
  * This is the main class
  * @author VirtCode
@@ -21,7 +23,7 @@ public class Main {
      * @param args args of that method
      */
     public static void main(String[] args) {
-        new Main();
+        new Main(args);
     }
 
     private final Settings settings;
@@ -37,13 +39,16 @@ public class Main {
     /**
      * Creates the MainObject
      */
-    public Main(){
+    public Main(String[] args){
+        boolean startup = Arrays.asList(args).contains("startup");
+
         Dialogs.initialize();
 
         events = createEventBus();
         inputs = new InputBus();
 
         settings = Settings.load();
+        if (startup && !settings.isStartWithSystem()) System.exit(0);
 
         modules = new ModuleLoader(events, inputs);
         registerModules();

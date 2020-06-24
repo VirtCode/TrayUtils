@@ -83,6 +83,7 @@ public class SettingsGui {
 
         startWithOS = ComponentFactory.createCheckBox();
         startWithOS.setText("Start with OS");
+        startWithOS.setSelected(settings.isStartWithSystem());
 
         consumeKeys = ComponentFactory.createCheckBox();
         consumeKeys.setText("Consume Caught Key Events");
@@ -115,6 +116,11 @@ public class SettingsGui {
     private void listen(){
         consumeKeys.addChangeListener(e -> {
             settings.setConsumeKeys(consumeKeys.isSelected());
+            settings.save();
+        });
+
+        startWithOS.addChangeListener(e -> {
+            settings.setStartWithSystem(startWithOS.isSelected());
             settings.save();
         });
     }
