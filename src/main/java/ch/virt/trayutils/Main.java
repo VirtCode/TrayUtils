@@ -18,12 +18,14 @@ import java.util.Arrays;
  * @version 1.0
  */
 public class Main {
+    private static final String TAG = "[Main] ";
     public static final String VERSION = "Release 1.0";
     /**
      * This is just another main method - JAMM
      * @param args args of that method
      */
     public static void main(String[] args) {
+        System.out.println(TAG + "Going to Start application");
         new Main(args);
     }
 
@@ -42,9 +44,13 @@ public class Main {
      */
     public Main(String[] args){
         boolean startup = Arrays.asList(args).contains("startup");
+        if (startup) System.out.println(TAG + "Is starting with OS");
 
         settings = Settings.load();
-        if (startup && !settings.isStartWithSystem()) System.exit(0);
+        if (startup && !settings.isStartWithSystem()){
+            System.out.println(TAG + "Going to close because of starting with os is disabled");
+            System.exit(0);
+        }
 
         events = createEventBus();
         inputs = new InputBus();
@@ -60,6 +66,8 @@ public class Main {
         tray = new Tray(events);
 
         gui = new GuiWrapper(events, settings, modules);
+
+        System.out.println(TAG + "Application started successfully");
 
         events.saveSettings();
     }
@@ -103,11 +111,13 @@ public class Main {
 
             @Override
             public void modulePressed(int id) {
+                System.out.println(TAG + "Calling launch event for module: " + id);
                 modules.keyEventForModule(id);
             }
 
             @Override
             public void quit() {
+                System.out.println(TAG + "Going to exit!");
                 settings.save();
                 System.exit(0);
             }

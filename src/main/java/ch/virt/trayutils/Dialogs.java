@@ -9,20 +9,22 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.net.URI;
-import java.nio.channels.OverlappingFileLockException;
 
 /**
- * This class is used to show plebig dialogs
+ * This class is used to show dialogs
  * @author VirtCode
  * @version 1.0
  */
 public class Dialogs {
+    
+    private static final String TAG = "[Dialogs] "; 
 
     /**
      * This method shows an error dialog
      * @param message error message
      */
     public static void showErrorDialog(String message){
+        System.out.println(TAG + "Showing error dialog with message: " + message);
         JDialog dialog = new JDialog();
         JPanel parent = ComponentFactory.createPanel(ColorManager.mainBackground);
         parent.setLayout(new BoxLayout(parent, BoxLayout.Y_AXIS));
@@ -60,6 +62,7 @@ public class Dialogs {
      * This method shows an about dialog
      */
     public static void showAboutDialog(){
+        System.out.println(TAG + "Showing about Dialog");
         JDialog dialog = new JDialog();
         JPanel parent = ComponentFactory.createPanel(ColorManager.mainBackground);
         parent.setLayout(new BoxLayout(parent, BoxLayout.Y_AXIS));
@@ -90,7 +93,7 @@ public class Dialogs {
         website.addActionListener(e -> { try {
             Desktop.getDesktop().browse(new URI(ResourceManager.website));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            showErrorDialog("Failed to Open Website!");
         }});
 
         panel.add(website);

@@ -13,6 +13,7 @@ import java.util.HashMap;
  * @version 1.0
  */
 public class ModuleLoader {
+    private static final String TAG = "[ModuleLoader] ";
 
     private HashMap<Integer, Module> modules;
     private MainEventBus events;
@@ -37,6 +38,7 @@ public class ModuleLoader {
         module.setBuses(events, inputs);
         module.create();
         modules.put(module.getId(), module);
+        System.out.println(TAG + "Registered Module " + module.getName());
     }
 
     /**

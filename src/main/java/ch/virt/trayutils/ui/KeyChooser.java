@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class KeyChooser {
+    private static final String TAG = "[KeyChooser] ";
 
     private static ArrayList<Integer> currentlyPressed;
     private static boolean running;
@@ -86,6 +87,9 @@ public class KeyChooser {
      */
     public static void choose(Listener<Integer[]> chosenKeycodes){
         if (running) return;
+        
+        System.out.println(TAG + "Going to choose multiple keys");
+        
         chooseOne = false;
 
         Runnable frameRun = () -> {
@@ -102,6 +106,7 @@ public class KeyChooser {
 
                 if (finished){
                     chosenKeycodes.called(currentlyPressed.toArray(new Integer[0]));
+                    System.out.println(TAG + "Keys Chosen");
                     break;
                 }
                 if (canceled) break;
@@ -121,6 +126,7 @@ public class KeyChooser {
      */
     public static void chooseOne(Listener<Integer> chosenKeycodes){
         if (running) return;
+        System.out.println(TAG + "Going to choose one key");
         chooseOne = true;
 
         Runnable frameRun = () -> {
@@ -137,6 +143,7 @@ public class KeyChooser {
 
                 if (finished){
                     chosenKeycodes.called(currentlyPressed.get(0));
+                    System.out.println(TAG + "Key Chosen");
                     break;
                 }
                 if (canceled) break;

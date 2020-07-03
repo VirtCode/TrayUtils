@@ -1,6 +1,8 @@
 package ch.virt.trayutils.event;
 
 import ch.virt.trayutils.modules.KeyBind;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.mouse.NativeMouseEvent;
 
 import java.util.ArrayList;
 
@@ -23,7 +25,7 @@ public class InputBus {
         mouseReleasedListeners = new ArrayList<>();
     }
 
-    private ArrayList<KeyBind> binds;
+    private final ArrayList<KeyBind> binds;
     public void addKeyBind(KeyBind bind){
         binds.add(bind);
     }
@@ -31,49 +33,49 @@ public class InputBus {
         binds.remove(bind);
     }
 
-    public ArrayList<Listener<Integer>> keyPressedListeners;
+    private final ArrayList<Listener<Integer>> keyPressedListeners;
     public void addKeyPressedListener(Listener<Integer> listener){
         keyPressedListeners.add(listener);
     }
-    public void keyPressed(int keycode){
+    public void keyPressed(NativeKeyEvent keycode){
         for (KeyBind bind : binds) {
-            bind.keyPressed(keycode);
+            if (bind.keyPressed(keycode.getKeyCode())) InputListener.attemptConsumption(keycode);
         }
         for (Listener<Integer> keyPressedListener : keyPressedListeners) {
-            keyPressedListener.called(keycode);
+            keyPressedListener.called(keycode.getKeyCode());
         }
     }
 
-    public ArrayList<Listener<Integer>> keyReleasedListeners;
+    private final ArrayList<Listener<Integer>> keyReleasedListeners;
     public void addKeyReleasedListener(Listener<Integer> listener){
         keyReleasedListeners.add(listener);
     }
-    public void keyReleased(int keycode){
+    public void keyReleased(NativeKeyEvent keycode){
         for (KeyBind bind : binds) {
-            bind.keyReleased(keycode);
+            bind.keyReleased(keycode.getKeyCode());
         }
         for (Listener<Integer> keyReleasedListener : keyReleasedListeners) {
-            keyReleasedListener.called(keycode);
+            keyReleasedListener.called(keycode.getKeyCode());
         }
     }
 
-    public ArrayList<Listener<Integer>> mousePressedListeners;
+    private final ArrayList<Listener<Integer>> mousePressedListeners;
     public void addMousePressedListener(Listener<Integer> listener){
         mousePressedListeners.add(listener);
     }
-    public void mousePressed(int keycode){
+    public void mousePressed(NativeMouseEvent keycode){
         for (Listener<Integer> mousePressedListener : mousePressedListeners) {
-            mousePressedListener.called(keycode);
+            mousePressedListener.called(keycode.getButton());
         }
     }
 
-    public ArrayList<Listener<Integer>> mouseReleasedListeners;
+    private final ArrayList<Listener<Integer>> mouseReleasedListeners;
     public void addMouseReleasedListener(Listener<Integer> listener){
         mouseReleasedListeners.add(listener);
     }
-    public void mouseReleased(int keycode){
+    public void mouseReleased(NativeMouseEvent keycode){
         for (Listener<Integer> mouseReleasedListener : mouseReleasedListeners) {
-            mouseReleasedListener.called(keycode);
+            mouseReleasedListener.called(keycode.getButton());
         }
     }
 

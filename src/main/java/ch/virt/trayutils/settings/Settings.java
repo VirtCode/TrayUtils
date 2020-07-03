@@ -1,5 +1,6 @@
 package ch.virt.trayutils.settings;
 
+import ch.virt.trayutils.Dialogs;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
@@ -13,7 +14,9 @@ import java.util.Arrays;
  * @version 1.0
  */
 public class Settings {
-    public static final String DIR = System.getenv("APPDATA") + "/WinUtils/";
+    private static final String TAG = "[Settings] ";
+
+    public static final String DIR = "";
     public static final String FILE = "settings.json";
 
     @Expose
@@ -39,13 +42,15 @@ public class Settings {
      * @return loaded settings
      */
     public static Settings load(){
+        System.out.println(TAG + "Loading settings");
         new File(DIR).mkdir();
         File settings = new File(DIR + FILE);
         if (settings.exists() && !settings.isDirectory()){
             try {
                 return new Gson().fromJson(new FileReader(settings), Settings.class);
             } catch (FileNotFoundException e) {
-                System.err.println("Failed to read Settingsfile");
+                Dialogs.showErrorDialog("Failed to read Settings from file");
+                System.err.println(TAG + "Failed to read Settingsfile");
                 return new Settings();
             }
         }else return new Settings();
@@ -63,8 +68,10 @@ public class Settings {
             writer.write(json);
             writer.close();
         } catch (IOException e) {
-            System.err.println("Failed to write Settingsfile");
+            Dialogs.showErrorDialog("Failed to write settings to file");
+            System.err.println(TAG + "Failed to write Settingsfile");
         }
+        System.out.println(TAG + "Saved Settings");
     }
 
     /**

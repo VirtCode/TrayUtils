@@ -11,6 +11,7 @@ import ch.virt.trayutils.settings.Settings;
  * @version 1.0
  */
 public class GuiWrapper {
+    private static final String TAG = "[GuiWrapper] ";    
     private Thread thread;
     private Gui gui;
     private boolean alive;
@@ -36,7 +37,8 @@ public class GuiWrapper {
      */
     public void create(){
         if (alive) return;
-
+        System.out.println(TAG + "Creating Gui");
+        
         thread = new Thread(() -> gui = new Gui(mainEvents, settingsInstance, modulesInstance, arg -> destroy()));
         thread.start();
 
@@ -55,6 +57,7 @@ public class GuiWrapper {
      * destroys the gui
      */
     public void destroy(){
+        System.out.println(TAG + "Destroying Gui");
         alive = false;
 
         gui.exitGui();

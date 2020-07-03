@@ -20,6 +20,7 @@ import java.util.logging.Logger;
  * @version 1.0
  */
 public class InputListener implements NativeKeyListener, NativeMouseListener {
+    private static final String TAG = "[InputListener] ";
 
     private MainEventBus events;
     private InputBus inputs;
@@ -30,7 +31,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
     private boolean[] basePressed;
     private int guiKey;
 
-    private boolean consumeKeyEvents;
+    private static boolean consumeKeyEvents;
 
     /**
      * Creates an InputListener
@@ -42,7 +43,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
         this.baseKeys = settings.getBaseKeyCodes();
         this.basePressed = new boolean[baseKeys.length];
         this.guiKey = settings.getGuiKeyCode();
-        this.consumeKeyEvents = settings.isConsumeKeys();
+        consumeKeyEvents = settings.isConsumeKeys();
 
         this.moduleKeyMap = moduleKeyMap;
 
@@ -65,11 +66,13 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
             GlobalScreen.registerNativeHook();
         }
         catch (NativeHookException ex) {
-            System.err.println("There was a problem registering the native hook.");
+            System.err.println(TAG + "There was a problem registering the native hook.");
         }
 
         GlobalScreen.addNativeKeyListener(this);
         GlobalScreen.addNativeMouseListener(this);
+
+        System.out.println(TAG + "Registered NativeHook successfully!");
     }
 
     @Override
@@ -79,7 +82,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        inputs.keyPressed(nativeKeyEvent.getKeyCode());
+        inputs.keyPressed(nativeKeyEvent);
 
         for (int i = 0; i < baseKeys.length; i++) {
             if (nativeKeyEvent.getKeyCode() == baseKeys[i]){
@@ -94,7 +97,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
             else if (moduleKeyMap.get(nativeKeyEvent.getKeyCode()) != null) events.modulePressed(moduleKeyMap.get(nativeKeyEvent.getKeyCode()));
             else done = false;
 
-            if (consumeKeyEvents && done) attemptConsumption(nativeKeyEvent);
+            if (done) attemptConsumption(nativeKeyEvent);
         }
     }
 
@@ -107,7 +110,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
             }
         }
 
-        inputs.keyReleased(nativeKeyEvent.getKeyCode());
+        inputs.keyReleased(nativeKeyEvent);
     }
 
     private boolean areAllPressed(){
@@ -123,12 +126,12 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
 
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-        inputs.mousePressed(nativeMouseEvent.getButton());
+        inputs.mousePressed(nativeMouseEvent);
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-        inputs.mouseReleased(nativeMouseEvent.getButton());
+        inputs.mouseReleased(nativeMouseEvent);
     }
 
     /**
@@ -139,7 +142,7 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
         this.baseKeys = settings.getBaseKeyCodes();
         this.basePressed = new boolean[baseKeys.length];
         this.guiKey = settings.getGuiKeyCode();
-        this.consumeKeyEvents = settings.isConsumeKeys();
+        consumeKeyEvents = settings.isConsumeKeys();
     }
 
     /**
@@ -154,13 +157,14 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
      * Attempts the Consumption of one Key event
      * @param e event to consume
      */
-    public void attemptConsumption(NativeKeyEvent e){
+    public static void attemptConsumption(NativeKeyEvent e){
+        if (!consumeKeyEvents) return;
         try {
             Field f = NativeInputEvent.class.getDeclaredField("reserved");
             f.setAccessible(true);
             f.setShort(e, (short) 0x01);
         } catch (IllegalAccessException | NoSuchFieldException ex) {
-            System.err.println("Failed to consume key event");
+            System.err.println(TAG + "Failed to consume key event");
             ex.printStackTrace();
         }
     }
