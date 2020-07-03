@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class Settings {
     private static final String TAG = "[Settings] ";
 
-    public static final String DIR = "";
+    public static final String DIR = System.getenv("APPDATA") + "/TrayUtils/";;
     public static final String FILE = "settings.json";
 
     @Expose
