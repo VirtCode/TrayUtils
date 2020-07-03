@@ -14,8 +14,10 @@ TrayUtils is a program, which aims to solve the problem of having too many littl
 * Gui Customization Options (like themes)
 ## Version
 The current Version is **1.0**
+## Download
+To download and install this application, you should head into the release section of this repo. There should be a previously built jar, able to be executed on every system running Java. If you are on windows, you also have the possiblity to download the windows installer, which installs the program onto your computer with a bundled jre. This much easier than using the jar and is the recommended way of doing it.
 ## Why Java?
-By looking at the selling points of this program, you might have asked yourself why I chose Java to develop it in. It is widely known, that Java isn't the most resource-efficient programming language out there. So why decided I to use Java? <br> Firstly, it's the programming language I am most familiar with. But More importantly, it is just very nice to develop an application that can just be run on a number of different operating systems. It is also pretty easy to develop an application, loading external code (like addons), in Java. Programming an Application in Java also doesn't mean, it cannot be programmed with maximal resource-efficiency in mind.
+By looking at the selling points of this program, you might have asked yourself why I chose Java to develop it in. It is widely known, that Java isn't the most resource-efficient programming language out there. So why did I decide to use Java? <br> Firstly, it's the programming language I am most familiar with. But More importantly, it is just very nice to develop an application that can just be run on a number of different operating systems. It is also pretty easy to develop an application, loading external code (like addons), in Java. Programming an Application in Java also doesn't mean, it cannot be programmed with maximal resource-efficiency in mind.
 ### Resource Usage
 As of version 1.0, the application only uses under 50mb of Memory whilst the gui is not opened. (At least on my system running Windows 10 Pro)
 ## License
