@@ -5,6 +5,7 @@ import ch.virt.trayutils.event.MainEventBus;
 import ch.virt.trayutils.gui.helper.ComponentFactory;
 import ch.virt.trayutils.gui.helper.GroupFactory;
 import ch.virt.trayutils.gui.helper.manager.StringManager;
+import ch.virt.trayutils.modules.ActionModule;
 import ch.virt.trayutils.modules.Module;
 
 import javax.swing.*;
@@ -76,10 +77,12 @@ public class ModuleSettingsDisplay {
         this.separatorTwo = ComponentFactory.createMenuSeparator();
         separatorTwo.setMaximumSize(new Dimension(10000, 10));
 
-        this.launch = ComponentFactory.createButton();
-        launch.setText(StringManager.launch);
+        if (module instanceof ActionModule){
+            this.launch = ComponentFactory.createButton();
+            launch.setText(StringManager.launch);
 
-        this.changeBind = GroupFactory.createChangeKeyBindModule(new int[]{module.getKeyBind()}, StringManager.keybind, arg -> {module.assignKeyBind(arg[0]); mainEventBus.saveSettings();}, true);
+            this.changeBind = GroupFactory.createChangeKeyBindModule(new int[]{((ActionModule) module).getKeyBind()}, StringManager.keybind, arg -> {((ActionModule) module).assignKeyBind(arg[0]); mainEventBus.saveSettings();}, true);
+        }
     }
 
     /**
@@ -92,9 +95,9 @@ public class ModuleSettingsDisplay {
         settings.add(description);
         settings.add(Box.createRigidArea(new Dimension(0, 8)));
         settings.add(separatorOne);
-        settings.add(launch);
+        if (module instanceof ActionModule) settings.add(launch);
         settings.add(enabled);
-        settings.add(changeBind);
+        if (module instanceof ActionModule) settings.add(changeBind);
         settings.add(Box.createRigidArea(new Dimension(0, 2)));
         settings.add(separatorTwo);
 
@@ -105,7 +108,7 @@ public class ModuleSettingsDisplay {
      * Assigns listener to the components
      */
     private void listen(){
-        launch.addActionListener(e -> mainEventBus.modulePressed(module.getId()));
+        if (module instanceof ActionModule) launch.addActionListener(e -> mainEventBus.modulePressed(module.getId()));
         enabled.addChangeListener(e -> {
             module.setEnabled(enabled.isSelected());
             mainEventBus.saveSettings();

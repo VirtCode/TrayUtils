@@ -20,7 +20,6 @@ public abstract class Module {
     protected final String description;
     protected String icon;
 
-    protected int keyBind;
     protected boolean enabled;
 
     /**
@@ -37,14 +36,12 @@ public abstract class Module {
      * Used to create a Module
      * @param id id of that module (should be unique)
      * @param name name of that module
-     * @param defaultKeyBind default keybind used to trigger the module
      * @param icon path to the main icon of that module
      * @param description description of the module
      */
-    public Module(int id, String name, int defaultKeyBind, String icon, String description){
+    public Module(int id, String name, String icon, String description){
         this.id = id;
         this.name = name;
-        this.keyBind = defaultKeyBind;
         this.icon = icon;
         this.description = description;
         this.enabled = true;
@@ -75,22 +72,6 @@ public abstract class Module {
     }
 
     /**
-     * Returns the keybind of that module
-     * @return int keybind
-     */
-    public int getKeyBind() {
-        return keyBind;
-    }
-
-    /**
-     * Assigns a new Keybind to the module
-     * @param bind new bind
-     */
-    public void assignKeyBind(int bind){
-        this.keyBind = bind;
-    }
-
-    /**
      * Returns whether the module is enabled
      * @return is enabled
      */
@@ -111,11 +92,6 @@ public abstract class Module {
      * (is called when the busses have been initialized)
      */
     public abstract void create();
-
-    /**
-     * Called when the module should start (key storke is pressed)
-     */
-    public abstract void keyStrokeCalled();
 
     /**
      * Should create a panel with the settings things on

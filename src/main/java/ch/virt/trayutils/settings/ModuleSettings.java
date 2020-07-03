@@ -1,5 +1,6 @@
 package ch.virt.trayutils.settings;
 
+import ch.virt.trayutils.modules.ActionModule;
 import ch.virt.trayutils.modules.Module;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
@@ -34,7 +35,7 @@ public class ModuleSettings {
     public void fetch(Module module){
         this.settings = module.toSettings();
         this.id = module.getId();
-        this.keyBinds = module.getKeyBind();
+        if(module instanceof ActionModule) this.keyBinds = ((ActionModule) module).getKeyBind();
         this.enabled = module.isEnabled();
     }
 
@@ -44,7 +45,7 @@ public class ModuleSettings {
      */
     public void apply(Module module){
         module.fromSettings(settings);
-        module.assignKeyBind(keyBinds);
+        if (module instanceof ActionModule) ((ActionModule) module).assignKeyBind(keyBinds);
         module.setEnabled(enabled);
     }
 

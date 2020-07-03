@@ -4,6 +4,7 @@ import ch.virt.trayutils.event.MainEventBus;
 import ch.virt.trayutils.event.InputBus;
 import ch.virt.trayutils.settings.ModuleSettings;
 
+import javax.swing.*;
 import java.util.HashMap;
 
 /**
@@ -44,7 +45,7 @@ public class ModuleLoader {
      */
     public void keyEventForModule(int id){
         Module module = modules.get(id);
-        if (module != null && module.isEnabled()) module.keyStrokeCalled();
+        if (module instanceof ActionModule && module.isEnabled()) ((ActionModule)module).keyStrokeCalled();
     }
 
     /**
@@ -87,7 +88,7 @@ public class ModuleLoader {
     public HashMap<Integer, Integer> getKeyModuleMap(){
         HashMap<Integer, Integer> map = new HashMap<>();
         for (Module module : modules.values()) {
-            map.put(module.getKeyBind(), module.getId());
+            if(module instanceof ActionModule) map.put(((ActionModule) module).getKeyBind(), module.getId());
         }
         return map;
     }

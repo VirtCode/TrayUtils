@@ -1,5 +1,7 @@
 package ch.virt.trayutils.event;
 
+import ch.virt.trayutils.modules.KeyBind;
+
 import java.util.ArrayList;
 
 /**
@@ -14,10 +16,19 @@ public class InputBus {
      * Initializes the lists
      */
     public InputBus(){
+        binds = new ArrayList<>();
         keyPressedListeners = new ArrayList<>();
         keyReleasedListeners = new ArrayList<>();
         mousePressedListeners = new ArrayList<>();
         mouseReleasedListeners = new ArrayList<>();
+    }
+
+    private ArrayList<KeyBind> binds;
+    public void addKeyBind(KeyBind bind){
+        binds.add(bind);
+    }
+    public void removeKeyBind(KeyBind bind){
+        binds.remove(bind);
     }
 
     public ArrayList<Listener<Integer>> keyPressedListeners;
@@ -25,6 +36,9 @@ public class InputBus {
         keyPressedListeners.add(listener);
     }
     public void keyPressed(int keycode){
+        for (KeyBind bind : binds) {
+            bind.keyPressed(keycode);
+        }
         for (Listener<Integer> keyPressedListener : keyPressedListeners) {
             keyPressedListener.called(keycode);
         }
@@ -35,6 +49,9 @@ public class InputBus {
         keyReleasedListeners.add(listener);
     }
     public void keyReleased(int keycode){
+        for (KeyBind bind : binds) {
+            bind.keyReleased(keycode);
+        }
         for (Listener<Integer> keyReleasedListener : keyReleasedListeners) {
             keyReleasedListener.called(keycode);
         }

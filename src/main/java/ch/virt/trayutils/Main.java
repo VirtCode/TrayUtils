@@ -18,6 +18,7 @@ import java.util.Arrays;
  * @version 1.0
  */
 public class Main {
+    public static final String VERSION = "Release 1.0";
     /**
      * This is just another main method - JAMM
      * @param args args of that method
@@ -42,13 +43,11 @@ public class Main {
     public Main(String[] args){
         boolean startup = Arrays.asList(args).contains("startup");
 
-        Dialogs.initialize();
+        settings = Settings.load();
+        if (startup && !settings.isStartWithSystem()) System.exit(0);
 
         events = createEventBus();
         inputs = new InputBus();
-
-        settings = Settings.load();
-        if (startup && !settings.isStartWithSystem()) System.exit(0);
 
         modules = new ModuleLoader(events, inputs);
         registerModules();

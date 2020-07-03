@@ -1,5 +1,7 @@
 package ch.virt.trayutils.gui.helper.manager;
 
+import ch.virt.trayutils.Main;
+
 /**
  * @author VirtCode
  * @version 1.0
@@ -29,6 +31,13 @@ public class StringManager {
     public static String guiBind = "Gui Keybind";
     public static String startWithOS = "Start With OS";
     public static String consumeEvents = "Consume Caught Key Events";
+
+    public static String errorIntro = "The following Error occurred:";
+    public static String errorTitle = "TrayUtils error";
+    public static String aboutTitle = "About TrayUtils";
+    public static String aboutText = "<html>" + "TrayUtils Version: " + Main.VERSION + "<br>" + "&copy Virt 2020" + "<html>";
+
+    public static String dialogClose = "Close";
 
 
 

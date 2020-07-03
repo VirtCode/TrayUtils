@@ -2,6 +2,7 @@ package ch.virt.trayutils.ui;
 
 import ch.virt.trayutils.Dialogs;
 import ch.virt.trayutils.event.MainEventBus;
+import ch.virt.trayutils.gui.helper.ResourceHelper;
 import ch.virt.trayutils.gui.helper.manager.ResourceManager;
 import ch.virt.trayutils.gui.helper.manager.StringManager;
 
@@ -33,7 +34,7 @@ public class Tray {
         if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
 
-            this.icon = new TrayIcon(getImage(), StringManager.trayTitle, getMenu());
+            this.icon = new TrayIcon(ResourceHelper.colorizeImage(ResourceHelper.loadImage(ResourceManager.logoSmall), Color.WHITE), StringManager.trayTitle, getMenu());
             this.icon.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -69,15 +70,6 @@ public class Tray {
         }
     }
 
-    private Image getImage() {
-        try {
-            return ImageIO.read(Tray.class.getResourceAsStream(ResourceManager.logoSmall));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-    }
-
     /**
      * returns the popup menu of the tray
      * @return the created popup menu
@@ -93,7 +85,7 @@ public class Tray {
         menu.add(showGui);
 
         MenuItem about = new MenuItem(StringManager.about);
-        about.addActionListener(e -> Dialogs.showAbout());
+        about.addActionListener(e -> Dialogs.showAboutDialog());
         menu.add(about);
 
         menu.addSeparator();

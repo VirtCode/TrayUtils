@@ -1,6 +1,7 @@
 package ch.virt.trayutils.modules.instances;
 
 import ch.virt.trayutils.gui.helper.ComponentFactory;
+import ch.virt.trayutils.modules.ActionModule;
 import ch.virt.trayutils.modules.Module;
 import com.google.gson.JsonObject;
 import org.jnativehook.keyboard.NativeKeyEvent;
@@ -16,7 +17,7 @@ import java.awt.geom.RoundRectangle2D;
  * @author VirtCode
  * @version 1.0
  */
-public class ColorPickerModule extends Module {
+public class ColorPickerModule extends ActionModule {
     private boolean showInstructions = true;
     private int frameX = -1;
     private int frameY = -1;
@@ -33,7 +34,7 @@ public class ColorPickerModule extends Module {
      * Creates a color picker module
      */
     public ColorPickerModule() {
-        super(9846, "Colorpicker", 46, "/color_picker.png", "This Module is basically a system wide color picker. If it is activated using its keypress, a little window will pop up and show which color is being hovered over by the mouse. You can then click or press enter to copy the hex value of that color into your clipboard.");
+        super(9846, "Colorpicker", "/color_picker.png", "This Module is basically a system wide color picker. If it is activated using its keypress, a little window will pop up and show which color is being hovered over by the mouse. You can then click or press enter to copy the hex value of that color into your clipboard.", 46);
     }
 
     @Override

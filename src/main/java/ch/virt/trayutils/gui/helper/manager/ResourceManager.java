@@ -7,7 +7,7 @@ package ch.virt.trayutils.gui.helper.manager;
 public class ResourceManager {
     public static String menuBurger = "/menu_burger.png";
     public static String logoMedium = "/icon_medium.png";
-    public static String logoSmall = "/logo.png";
+    public static String logoSmall = "/logo_small.png";
 
-    public static String website = "github.com/virtcode";
+    public static String website = "https://github.com/virtcode/trayutils";
 }

@@ -110,7 +110,7 @@ public class TopBarGui {
 
         exit.addActionListener(e -> mainEvents.quit());
         hide.addActionListener(e -> mainEvents.toggleGui());
-        about.addActionListener(e -> Dialogs.showAbout());
+        about.addActionListener(e -> Dialogs.showAboutDialog());
         website.addActionListener(e -> {
             try {
                 Desktop.getDesktop().browse(new URI(ResourceManager.website));
