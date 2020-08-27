@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class Settings {
     private static final String TAG = "[Settings] ";
 
-    public static final String DIR = System.getenv("APPDATA") + "/TrayUtils/";;
+    public static final String DIR = System.getenv("APPDATA") + "/TrayUtils/";
     public static final String FILE = "settings.json";
 
     @Expose
@@ -29,6 +29,8 @@ public class Settings {
     private boolean consumeKeys = true;
     @Expose
     private boolean startWithSystem = true;
+    @Expose
+    private boolean loadJarModules = true;
 
     /**
      * Creates empty settings
@@ -148,6 +150,14 @@ public class Settings {
     }
 
     /**
+     * Return whether the program should load external modules from the modules folder
+     * @return should load those modules
+     */
+    public boolean isLoadJarModules() {
+        return loadJarModules;
+    }
+
+    /**
      * Set whether the system should consume key events
      * @param consumeKeys should consume key events
      */
@@ -169,5 +179,13 @@ public class Settings {
      */
     public void setStartWithSystem(boolean startWithSystem) {
         this.startWithSystem = startWithSystem;
+    }
+
+    /**
+     * Return whether the program should load external modules from the modules folder
+     * @param loadJarModules sets whether it should load those
+     */
+    public void setLoadJarModules(boolean loadJarModules) {
+        this.loadJarModules = loadJarModules;
     }
 }

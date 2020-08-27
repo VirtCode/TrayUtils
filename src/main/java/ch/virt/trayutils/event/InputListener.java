@@ -1,5 +1,6 @@
 package ch.virt.trayutils.event;
 
+import ch.virt.trayutils.Utils;
 import ch.virt.trayutils.settings.Settings;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -93,8 +94,8 @@ public class InputListener implements NativeKeyListener, NativeMouseListener {
 
         if (areAllPressed()){
             boolean done = true;
-            if (nativeKeyEvent.getKeyCode() == guiKey) events.toggleGui();
-            else if (moduleKeyMap.get(nativeKeyEvent.getKeyCode()) != null) events.modulePressed(moduleKeyMap.get(nativeKeyEvent.getKeyCode()));
+            if (nativeKeyEvent.getKeyCode() == guiKey) Utils.runNext(() -> events.toggleGui());
+            else if (moduleKeyMap.get(nativeKeyEvent.getKeyCode()) != null) Utils.runNext(() -> events.modulePressed(moduleKeyMap.get(nativeKeyEvent.getKeyCode())));
             else done = false;
 
             if (done) attemptConsumption(nativeKeyEvent);

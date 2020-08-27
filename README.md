@@ -3,6 +3,7 @@
 TrayUtils is a program, which aims to solve the problem of having too many little tray applications slowing down your computer. It is basically one application, which can load modules. These modules can do almost everything. The Application comes with a custom Gui, which can be evoked with an item in the system tray. The main method of interaction between the user and the modules, or the application, is by using native system keybindings. That means they are accessible no matter what the user is doing. Since the project is kind of open source, it is possible for users, to develop their own modules (coming soon).
 ## Features
 ### Implemented
+* Jar Module Loading
 * Configuration Gui
 * Native Keybindings
 * Module System
@@ -10,10 +11,9 @@ TrayUtils is a program, which aims to solve the problem of having too many littl
 * Multi Operating System Support
 * Starting with OS
 ### Pending
-* Jar Module Loading
 * Gui Customization Options (like themes)
 ## Version
-The current Version is **1.0**
+The current Version is **1.1**
 ## Download
 To download and install this application, you should head into the release section of this repo. There should be a previously built jar, able to be executed on every system running Java. If you are on windows, you also have the possiblity to download the windows installer, which installs the program onto your computer with a bundled jre. This much easier than using the jar and is the recommended way of doing it.
 ## Why Java?

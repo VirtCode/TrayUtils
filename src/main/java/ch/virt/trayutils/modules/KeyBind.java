@@ -1,5 +1,6 @@
 package ch.virt.trayutils.modules;
 
+import ch.virt.trayutils.Utils;
 import ch.virt.trayutils.event.Listener;
 
 /**
@@ -64,7 +65,15 @@ public class KeyBind {
             if (!b) return false;
         }
 
-        listener.called(null);
+        Utils.runNext(() -> listener.called(null));
         return true;
+    }
+
+    /**
+     * Returns the keycodes used
+     * @return keycodes used
+     */
+    public int[] getCodes() {
+        return codes;
     }
 }

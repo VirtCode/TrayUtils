@@ -58,6 +58,7 @@ public class ResourceHelper {
      * @return image
      */
     public static Image loadImage(String path) {
+        System.out.println(path);
         try {
             return ImageIO.read(Main.class.getResourceAsStream(path));
         } catch (IOException e) {

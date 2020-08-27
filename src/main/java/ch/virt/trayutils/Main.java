@@ -4,7 +4,7 @@ import ch.virt.trayutils.event.MainEventBus;
 import ch.virt.trayutils.event.InputBus;
 import ch.virt.trayutils.event.InputListener;
 import ch.virt.trayutils.gui.GuiWrapper;
-import ch.virt.trayutils.modules.instances.ColorPickerModule;
+import ch.virt.trayutils.modules.JarModuleLoader;
 import ch.virt.trayutils.modules.ModuleLoader;
 import ch.virt.trayutils.ui.KeyChooser;
 import ch.virt.trayutils.settings.Settings;
@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public class Main {
     private static final String TAG = "[Main] ";
-    public static final String VERSION = "Release 1.0";
+    public static final String VERSION = "Release 1.1";
     /**
      * This is just another main method - JAMM
      * @param args args of that method
@@ -76,7 +76,18 @@ public class Main {
      * Registers the module into the system
      */
     private void registerModules(){
-        modules.registerModule(new ColorPickerModule());
+        if (settings.isLoadJarModules()) registerJarModules();
+        // Register local Modules
+    }
+
+    /**
+     * Loads the modules from jars
+     */
+    private void registerJarModules(){
+        JarModuleLoader loader = new JarModuleLoader();
+
+        loader.load();
+        loader.registerFoundModules(modules);
     }
 
     /**

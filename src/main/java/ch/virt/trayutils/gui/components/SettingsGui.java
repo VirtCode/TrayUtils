@@ -35,6 +35,8 @@ public class SettingsGui {
 
     private JCheckBox startWithOS;
 
+    private JCheckBox loadJarModules;
+
     private final Settings settings;
 
     /**
@@ -84,6 +86,10 @@ public class SettingsGui {
         startWithOS.setText(StringManager.startWithOS);
         startWithOS.setSelected(settings.isStartWithSystem());
 
+        loadJarModules = ComponentFactory.createCheckBox();
+        loadJarModules.setText(StringManager.loadJarModules);
+        loadJarModules.setSelected(settings.isLoadJarModules());
+
         consumeKeys = ComponentFactory.createCheckBox();
         consumeKeys.setText(StringManager.consumeEvents);
         consumeKeys.setSelected(settings.isConsumeKeys());
@@ -106,6 +112,7 @@ public class SettingsGui {
         settingsPanel.add(advancedSettings);
 
         advancedSettings.add(startWithOS);
+        advancedSettings.add(loadJarModules);
         advancedSettings.add(consumeKeys);
     }
 
@@ -120,6 +127,11 @@ public class SettingsGui {
 
         startWithOS.addChangeListener(e -> {
             settings.setStartWithSystem(startWithOS.isSelected());
+            settings.save();
+        });
+
+        loadJarModules.addChangeListener(e -> {
+            settings.setLoadJarModules(loadJarModules.isSelected());
             settings.save();
         });
     }

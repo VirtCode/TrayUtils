@@ -30,6 +30,7 @@ public class StringManager {
     public static String baseBind = "Base Keybind";
     public static String guiBind = "Gui Keybind";
     public static String startWithOS = "Start With OS";
+    public static String loadJarModules = "Load Modules from Jar files";
     public static String consumeEvents = "Consume Caught Key Events";
 
     public static String errorIntro = "The following Error occurred:";
@@ -38,10 +39,4 @@ public class StringManager {
     public static String aboutText = "<html>" + "TrayUtils Version: " + Main.VERSION + "<br>" + "&copy Virt 2020" + "<html>";
 
     public static String dialogClose = "Close";
-
-
-
-
-
-
 }

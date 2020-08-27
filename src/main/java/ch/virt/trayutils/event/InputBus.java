@@ -1,5 +1,6 @@
 package ch.virt.trayutils.event;
 
+import ch.virt.trayutils.Utils;
 import ch.virt.trayutils.modules.KeyBind;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.mouse.NativeMouseEvent;
@@ -42,7 +43,7 @@ public class InputBus {
             if (bind.keyPressed(keycode.getKeyCode())) InputListener.attemptConsumption(keycode);
         }
         for (Listener<Integer> keyPressedListener : keyPressedListeners) {
-            keyPressedListener.called(keycode.getKeyCode());
+            Utils.runNext(() -> keyPressedListener.called(keycode.getKeyCode()));
         }
     }
 
@@ -55,7 +56,7 @@ public class InputBus {
             bind.keyReleased(keycode.getKeyCode());
         }
         for (Listener<Integer> keyReleasedListener : keyReleasedListeners) {
-            keyReleasedListener.called(keycode.getKeyCode());
+            Utils.runNext(() -> keyReleasedListener.called(keycode.getKeyCode()));
         }
     }
 
@@ -65,7 +66,7 @@ public class InputBus {
     }
     public void mousePressed(NativeMouseEvent keycode){
         for (Listener<Integer> mousePressedListener : mousePressedListeners) {
-            mousePressedListener.called(keycode.getButton());
+            Utils.runNext(() -> mousePressedListener.called(keycode.getButton()));
         }
     }
 
@@ -75,7 +76,7 @@ public class InputBus {
     }
     public void mouseReleased(NativeMouseEvent keycode){
         for (Listener<Integer> mouseReleasedListener : mouseReleasedListeners) {
-            mouseReleasedListener.called(keycode.getButton());
+            Utils.runNext(() -> mouseReleasedListener.called(keycode.getButton()));
         }
     }
 
