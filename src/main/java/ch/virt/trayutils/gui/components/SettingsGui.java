@@ -5,10 +5,16 @@ import ch.virt.trayutils.gui.helper.manager.ColorManager;
 import ch.virt.trayutils.gui.helper.ComponentFactory;
 import ch.virt.trayutils.gui.helper.GroupFactory;
 import ch.virt.trayutils.gui.helper.manager.StringManager;
+import ch.virt.trayutils.modules.JarModuleLoader;
 import ch.virt.trayutils.settings.Settings;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class is the settings gui part of the ui
@@ -36,6 +42,8 @@ public class SettingsGui {
     private JCheckBox startWithOS;
 
     private JCheckBox loadJarModules;
+
+    private JButton openModules;
 
     private final Settings settings;
 
@@ -90,6 +98,9 @@ public class SettingsGui {
         loadJarModules.setText(StringManager.loadJarModules);
         loadJarModules.setSelected(settings.isLoadJarModules());
 
+        openModules = ComponentFactory.createButton();
+        openModules.setText(StringManager.openModulesFolder);
+
         consumeKeys = ComponentFactory.createCheckBox();
         consumeKeys.setText(StringManager.consumeEvents);
         consumeKeys.setSelected(settings.isConsumeKeys());
@@ -112,27 +123,37 @@ public class SettingsGui {
         settingsPanel.add(advancedSettings);
 
         advancedSettings.add(startWithOS);
-        advancedSettings.add(loadJarModules);
         advancedSettings.add(consumeKeys);
+        advancedSettings.add(loadJarModules);
+        advancedSettings.add(openModules);
+
     }
 
     /**
      * Assigns listeners to the components
      */
     private void listen(){
-        consumeKeys.addChangeListener(e -> {
+        consumeKeys.addActionListener(e -> {
             settings.setConsumeKeys(consumeKeys.isSelected());
             settings.save();
         });
 
-        startWithOS.addChangeListener(e -> {
+        startWithOS.addActionListener(e -> {
             settings.setStartWithSystem(startWithOS.isSelected());
             settings.save();
         });
 
-        loadJarModules.addChangeListener(e -> {
+        loadJarModules.addActionListener(e -> {
             settings.setLoadJarModules(loadJarModules.isSelected());
             settings.save();
+        });
+
+        openModules.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().open(new File(JarModuleLoader.DIR));
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
     }
 
@@ -140,7 +161,7 @@ public class SettingsGui {
      * Returns the parent panel
      * @return panel
      */
-    public JPanel getParent(){
-        return parentGroup;
+    public JComponent getParent(){
+        return ComponentFactory.wrapInScrollPane(parentGroup);
     }
 }

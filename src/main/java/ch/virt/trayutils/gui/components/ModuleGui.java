@@ -97,7 +97,7 @@ public class ModuleGui {
      * Assigns the components
      */
     private void assign(){
-        parentGroup.add(sideGroup, BorderLayout.LINE_START);
+        parentGroup.add(ComponentFactory.wrapInScrollPane(sideGroup), BorderLayout.LINE_START);
         parentGroup.add(mainGroup, BorderLayout.CENTER);
     }
 

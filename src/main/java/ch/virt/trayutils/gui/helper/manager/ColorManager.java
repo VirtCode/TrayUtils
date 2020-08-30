@@ -1,5 +1,7 @@
 package ch.virt.trayutils.gui.helper.manager;
 
+import sun.text.resources.ext.CollationData_ro;
+
 import java.awt.*;
 
 /**
@@ -23,6 +25,7 @@ public class ColorManager {
     public static Color sideBackground = new Color(0x2A2A2A);
     public static Color mainBackground = new Color(0x313131);
     public static Color mainSeparator = new Color(0x424242);
+    public static Color scrollbarThumb = new Color(0x393939);
 
     public static Color menuSeparator = new Color(0x5F5F5F);
     public static Color menuBackgroundIdle = new Color(0x404040);

@@ -1,5 +1,7 @@
 package ch.virt.trayutils.modules;
 
+import java.awt.*;
+
 /**
  * This class is a more classic approach to a module
  * @author VirtCode

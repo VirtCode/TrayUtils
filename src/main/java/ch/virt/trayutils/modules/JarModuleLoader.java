@@ -4,6 +4,7 @@ import java.awt.image.DirectColorModel;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -15,6 +16,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
+ * This class loads modules in from disk
  * @author VirtCode
  * @version 1.0
  */
@@ -23,6 +25,7 @@ public class JarModuleLoader {
     public static final String DIR = System.getenv("APPDATA") + "/TrayUtils/modules/";
     private static final String TAG = "[JarModuleLoader] "; 
     private ArrayList<Class<?>> moduleClasses;
+    private ArrayList<ClassLoader> classLoaders;
 
     /**
      * Loads all jar modules from the jar module directory
@@ -31,6 +34,7 @@ public class JarModuleLoader {
         System.out.println(TAG + "Going to load Jar Modules");
 
         moduleClasses = new ArrayList<>();
+        classLoaders = new ArrayList<>();
 
         File dir = new File(DIR);
         dir.mkdir();
@@ -72,7 +76,7 @@ public class JarModuleLoader {
             String className = je.getName().substring(0,je.getName().length()-6);
             if (className.endsWith("module-info")) continue;
             className = className.replace('/', '.');
-            addIfModule(cl.loadClass(className));
+            addIfModule(cl.loadClass(className), cl);
         }
     }
 
@@ -80,10 +84,11 @@ public class JarModuleLoader {
      * Adds the class to discovered modules if it is one
      * @param c class to check
      */
-    public void addIfModule(Class<?> c){
+    public void addIfModule(Class<?> c, ClassLoader loader){
         if (c.getSuperclass() != null && isAssociatedWithModule(c) && !Modifier.isAbstract(c.getModifiers())){
             System.out.println(TAG + "Found Module class: " + c.getName());
             moduleClasses.add(c);
+            classLoaders.add(loader);
         }
     }
 
@@ -111,6 +116,9 @@ public class JarModuleLoader {
         for (Class<?> moduleClass : moduleClasses) {
             try {
                 Module module = (Module) moduleClass.getConstructor().newInstance();
+
+                final ClassLoader cl = classLoaders.get(moduleClasses.indexOf(moduleClass));
+                module.setResourceLoader(cl::getResourceAsStream);
                 
                 loader.registerModule(module);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

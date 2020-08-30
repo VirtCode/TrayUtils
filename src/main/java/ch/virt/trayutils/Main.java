@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public class Main {
     private static final String TAG = "[Main] ";
-    public static final String VERSION = "Release 1.1";
+    public static final String VERSION = "Release 1.2";
     /**
      * This is just another main method - JAMM
      * @param args args of that method
@@ -136,6 +136,11 @@ public class Main {
             @Override
             public void toggleGui() {
                 gui.toggle();
+            }
+
+            @Override
+            public void showTrayNotification(String title, String text) {
+                tray.showNotification(title, text);
             }
         };
     }

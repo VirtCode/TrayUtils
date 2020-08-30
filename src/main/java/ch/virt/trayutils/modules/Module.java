@@ -2,9 +2,12 @@ package ch.virt.trayutils.modules;
 
 import ch.virt.trayutils.event.MainEventBus;
 import ch.virt.trayutils.event.InputBus;
+import ch.virt.trayutils.gui.helper.ResourceHelper;
 import com.google.gson.JsonObject;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.InputStream;
 
 /**
  * This class is the base class for a Module
@@ -21,6 +24,8 @@ public abstract class Module {
     protected String icon;
 
     protected boolean enabled;
+
+    protected ExternalResourceLoader resourceLoader;
 
     /**
      * Used to apply the event busses to the module
@@ -48,11 +53,25 @@ public abstract class Module {
     }
 
     /**
+     * Loads a resource from the set resource Loader
+     * @param path path to load from
+     * @return loaded stream
+     */
+    protected InputStream loadResource(String path){
+        if (resourceLoader != null) return resourceLoader.load(path);
+        return null;
+    }
+
+    public void setResourceLoader(ExternalResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
+    /**
      * Returns the path of the icon
      * @return string
      */
-    public String getIconPath(){
-        return icon;
+    public Image getIcon(){
+        return ResourceHelper.loadImage(loadResource(icon));
     }
 
     /**

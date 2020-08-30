@@ -31,6 +31,7 @@ public class StringManager {
     public static String guiBind = "Gui Keybind";
     public static String startWithOS = "Start With OS";
     public static String loadJarModules = "Load Modules from Jar files";
+    public static String openModulesFolder = "Open Modules Folder";
     public static String consumeEvents = "Consume Caught Key Events";
 
     public static String errorIntro = "The following Error occurred:";

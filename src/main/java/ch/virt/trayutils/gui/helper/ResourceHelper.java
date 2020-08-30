@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Used to load / change resources
@@ -58,9 +59,37 @@ public class ResourceHelper {
      * @return image
      */
     public static Image loadImage(String path) {
-        System.out.println(path);
         try {
             return ImageIO.read(Main.class.getResourceAsStream(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    }
+
+    /**
+     * Loads an image from the classpath the classloader is from
+     * @param path path to load
+     * @param loader loader of class
+     * @return image
+     */
+    public static Image loadImage(String path, ClassLoader loader){
+        try {
+            return ImageIO.read(loader.getResourceAsStream(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    }
+
+    /**
+     * Loads an image from the stream provided
+     * @param stream stream to load from
+     * @return image
+     */
+    public static Image loadImage(InputStream stream){
+        try {
+            return ImageIO.read(stream);
         } catch (IOException e) {
             e.printStackTrace();
         }

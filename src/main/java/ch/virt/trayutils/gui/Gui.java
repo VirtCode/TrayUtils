@@ -24,7 +24,7 @@ public class Gui {
 
     private JDialog frame;
 
-    private JPanel currentMain;
+    private JComponent currentMain;
 
     private TopBarGui topBar;
     private ModuleGui modules;
@@ -124,7 +124,7 @@ public class Gui {
      * Sets the currently displayed panel (settings or modules)
      * @param panel panel to display
      */
-    public void setMain(JPanel panel){
+    public void setMain(JComponent panel){
         if(currentMain != null) frame.remove(currentMain);
         currentMain = panel;
         frame.add(currentMain);

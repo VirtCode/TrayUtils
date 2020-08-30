@@ -29,6 +29,11 @@ public class ModuleSettings {
     }
 
     /**
+     * NoArgs constructor for gson
+     */
+    public ModuleSettings(){}
+
+    /**
      * Fetches the information out of the module and puts into the variables
      * @param module module
      */

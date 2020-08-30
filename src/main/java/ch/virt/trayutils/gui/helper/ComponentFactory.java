@@ -7,6 +7,8 @@ import ch.virt.trayutils.gui.misc.TextButtonHoverEffect;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ScrollBarUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
 /**
@@ -75,7 +77,16 @@ public class ComponentFactory {
      * @return button
      */
     public static JButton createImageButton(String path){
-        JButton button = new JButton(new ImageIcon(ResourceHelper.loadImage(path)));
+        return createImageButton(ResourceHelper.loadImage(path));
+    }
+
+    /**
+     * Creates a button that only consists of an image
+     * @param image image of the button
+     * @return button
+     */
+    public static JButton createImageButton(Image image){
+        JButton button = new JButton(new ImageIcon(image));
         button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setOpaque(false);
@@ -185,6 +196,34 @@ public class ComponentFactory {
         textField.setBorder(new EmptyBorder(8,8,8,8));
         textField.setMaximumSize(new Dimension(1000, textField.getMinimumSize().height));
         return textField;
+    }
+
+    public static JPanel wrapInGroup(JComponent component){
+        JPanel panel = createGroup();
+        panel.add(component);
+        return panel;
+    }
+
+    public static JScrollPane wrapInScrollPane(JComponent content){
+        JScrollPane pane = new JScrollPane(content, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
+            @Override
+            public Dimension getPreferredSize() {
+                int h = super.getPreferredSize().height;
+                int w = super.getViewport().getView().getMinimumSize().width;
+                return new Dimension(w, h);
+            }
+        };
+        pane.setOpaque(false);
+        pane.setBorder(new EmptyBorder(0, 0, 0,0));
+        JScrollBar scrollBar = new JScrollBar(JScrollBar.VERTICAL) {
+
+            @Override
+            public boolean isVisible() {
+                return true;
+            }
+        };
+        pane.setVerticalScrollBar(scrollBar);
+        return pane;
     }
 
     /**

@@ -45,7 +45,7 @@ public class ModuleSettingsDisplay {
         this.module = module;
         this.mainEventBus = mainEventBus;
 
-        this.triggerButton = ComponentFactory.createImageButton(module.getIconPath());
+        this.triggerButton = ComponentFactory.createImageButton(module.getIcon());
         triggerButton.addActionListener(e -> moduleCalled.called(module.getId()));
 
         create();
@@ -109,7 +109,7 @@ public class ModuleSettingsDisplay {
      */
     private void listen(){
         if (module instanceof ActionModule) launch.addActionListener(e -> mainEventBus.modulePressed(module.getId()));
-        enabled.addChangeListener(e -> {
+        enabled.addActionListener(e -> {
             module.setEnabled(enabled.isSelected());
             mainEventBus.saveSettings();
         });
