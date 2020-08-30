@@ -27,4 +27,11 @@ public abstract class MainEventBus {
      * Shows the Gui of the application
      */
     public abstract void toggleGui();
+
+    /**
+     * Shows a Notification in the Tray
+     * @param title title of the notification
+     * @param text text of the notification
+     */
+    public abstract void showTrayNotification(String title, String text);
 }

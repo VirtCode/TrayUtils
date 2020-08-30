@@ -83,4 +83,8 @@ public class Tray {
         return menu;
     }
 
+    public void showNotification(String title, String content){
+        icon.displayMessage(title, content, TrayIcon.MessageType.NONE);
+    }
+
 }
