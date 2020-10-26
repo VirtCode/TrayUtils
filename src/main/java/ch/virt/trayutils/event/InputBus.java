@@ -2,8 +2,8 @@ package ch.virt.trayutils.event;
 
 import ch.virt.trayutils.Utils;
 import ch.virt.trayutils.modules.KeyBind;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.mouse.NativeMouseEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
 
 import java.util.ArrayList;
 

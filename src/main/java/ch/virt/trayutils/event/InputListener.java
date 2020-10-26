@@ -2,13 +2,13 @@ package ch.virt.trayutils.event;
 
 import ch.virt.trayutils.Utils;
 import ch.virt.trayutils.settings.Settings;
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
-import org.jnativehook.NativeInputEvent;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.keyboard.NativeKeyListener;
-import org.jnativehook.mouse.NativeMouseEvent;
-import org.jnativehook.mouse.NativeMouseListener;
+import com.github.kwhat.jnativehook.GlobalScreen;
+import com.github.kwhat.jnativehook.NativeHookException;
+import com.github.kwhat.jnativehook.NativeInputEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
+import com.github.kwhat.jnativehook.mouse.NativeMouseListener;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

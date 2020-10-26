@@ -13,7 +13,7 @@ TrayUtils is a program, which aims to solve the problem of having too many littl
 ### Pending
 * Gui Customization Options (like themes)
 ## Version
-The current Version is **1.2**
+The current Version is **1.2.1**
 ## Download
 To download and install this application, you should head into the release section of this repo. There should be a previously built jar, able to be executed on every system running Java. If you are on windows, you also have the possiblity to download the windows installer, which installs the program onto your computer with a bundled jre. This much easier than using the jar and is the recommended way of doing it.
 ## Modules
