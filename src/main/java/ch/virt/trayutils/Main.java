@@ -5,6 +5,7 @@ import ch.virt.trayutils.event.InputBus;
 import ch.virt.trayutils.event.InputListener;
 import ch.virt.trayutils.gui.GuiWrapper;
 import ch.virt.trayutils.modules.JarModuleLoader;
+import ch.virt.trayutils.modules.KeyBind;
 import ch.virt.trayutils.modules.ModuleLoader;
 import ch.virt.trayutils.ui.KeyChooser;
 import ch.virt.trayutils.settings.Settings;
@@ -19,7 +20,7 @@ import java.util.Arrays;
  */
 public class Main {
     private static final String TAG = "[Main] ";
-    public static final String VERSION = "Release 1.2";
+    public static final String VERSION = "Release 1.2.1:";
     /**
      * This is just another main method - JAMM
      * @param args args of that method

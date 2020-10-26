@@ -2,7 +2,7 @@ package ch.virt.trayutils.ui;
 
 import ch.virt.trayutils.event.InputBus;
 import ch.virt.trayutils.event.Listener;
-import org.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -178,6 +178,6 @@ public class KeyChooser {
             sb.append(NativeKeyEvent.getKeyText(integer));
         }
 
-        return sb.toString().substring(3);
+        return sb.substring(3);
     }
 }

@@ -1,7 +1,7 @@
 package ch.virt.trayutils;
 
 import ch.virt.trayutils.event.Listener;
-import org.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 
 import java.awt.event.KeyEvent;
 
@@ -52,7 +52,7 @@ public class Utils {
 
     /**
      * This method converts native key codes to awt key codes. This is directly copied from the NativeHook SwingAdapter
-     * @see org.jnativehook.keyboard.SwingKeyAdapter
+     * @see com.github.kwhat.jnativehook.keyboard.SwingKeyAdapter
      * @param key native key to convert
      * @return normal key code
      */
